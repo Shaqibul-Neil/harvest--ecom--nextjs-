@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,89 +10,263 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
+/* ---------------- Schema ---------------- */
 const formSchema = z.object({
-  fullName: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters." }),
-  email: z.email({ message: "Invalid email address" }),
+  firstName: z.string().min(3, "First name must be at least 3 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.email("Invalid email address"),
+  phoneNumber: z.string().min(8, "Phone number is required"),
+  address: z.string().optional(),
+  city: z.string().min(1, "City is required"),
+  postalCode: z.string().optional(),
+  country: z.string().min(1, "Country is required"),
+  state: z.string().optional(),
 });
 
+/* ---------------- Component ---------------- */
 const RegisterForm = () => {
-  // Define your form
   const form = useForm({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
-      fullName: "", // match schema exactly
+      firstName: "",
+      lastName: "",
       email: "",
+      phoneNumber: "",
+      address: "",
+      city: "",
+      postalCode: "",
+      country: "",
+      state: "",
     },
   });
-  // Define a submit handler.
-  function onSubmit(values) {
-    // Do something with the form values.
-    // This will be type-safe and validated.
-    console.log(values);
-  }
 
   const { isSubmitting, isValid } = form.formState;
 
+  const onSubmit = (values) => {
+    console.log(values);
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl text-gray-600">
-          Register With{" "}
-          <span className="text-green-800 font-bold">Harvest</span>{" "}
-        </h2>
-      </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 my-4">
+          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>First Name*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="Enter your first name"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Last Name */}
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Last Name*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="Enter your last name"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              type="email"
+              autoComplete="off"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Email*</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      {...field}
+                      disabled={isSubmitting}
+                      placeholder="Enter your email address"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Phone Number*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      disabled={isSubmitting}
+                      placeholder="Enter your phone number"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {/* Address */}
           <FormField
             control={form.control}
-            name="fullName"
+            name="address"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full md:w-auto">
+                <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Input
-                    className="w-full h-11"
+                    {...field}
                     type="text"
                     disabled={isSubmitting}
-                    placeholder="Enter Your Full Name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="email"
+                    placeholder="Address Line 1"
                     className="w-full h-11"
-                    disabled={isSubmitting}
-                    placeholder="Enter Your Email Address"
-                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button
-            disabled={isSubmitting || !isValid}
-            type="submit"
-            className="w-full h-11"
-          >
-            Submit
-          </Button>
+          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+            {/* City */}
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>City*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="City"
+                      className="md:w-80 lg:w-88 w-full  h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Postal Code */}
+            <FormField
+              control={form.control}
+              name="postalCode"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Post Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      disabled={isSubmitting}
+                      placeholder="Post Code"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-between items-center md:flex-row flex-col gap-5">
+            {/* Country */}
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Country*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="Country"
+                      className="md:w-80 lg:w-88 w-full  h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* State */}
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Region / State</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="Region / State"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-between items-center gap-4 md:flex-row flex-col">
+            <div className="flex gap-1 items-center">
+              <p>Have an account?</p>
+              <Link href={"/login"} className="text-green-800 font-bold">
+                Login
+              </Link>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting || !isValid}
+              className="w-48 h-11 cursor-pointer"
+            >
+              Register
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
