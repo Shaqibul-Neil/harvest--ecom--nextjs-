@@ -1,8 +1,8 @@
-import LoginForm from "@/components/form/LoginForm";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import loginPic from "@/assets/login.webp";
+import LoginForm from "@/components/form/LoginForm";
 
 const Login = () => {
   return (
@@ -31,6 +31,7 @@ const Login = () => {
         <div className="w-full h-96 rounded-lg flex items-center justify-center text-gray-500">
           <Image
             src={loginPic}
+            loading="eager"
             alt="Vegetables in cart"
             width={500}
             height={500}

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 /* ---------------- Schema ---------------- */
 const formSchema = z.object({
@@ -35,8 +36,19 @@ const LoginForm = () => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    const { email, password } = values;
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+    //console.log(res);
+    if (res?.error) {
+      console.log("login failed");
+    } else {
+      console.log(`logged in ${email}`);
+    }
   };
 
   return (
@@ -86,7 +98,7 @@ const LoginForm = () => {
             )}
           />
 
-          <div className="flex justify-between items-center gap-4 md:flex-row flex-col">
+          <div className="flex justify-between items-center gap-4 lg:flex-row md:flex-col">
             <div className="flex gap-1 items-center">
               <p>Don’t have an account?</p>
               <Link href={"/register"} className="text-green-800 font-bold">

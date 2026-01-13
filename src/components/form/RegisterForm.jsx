@@ -1,9 +1,7 @@
 "use client";
-
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,24 +13,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { userRegisterSchema } from "@/schemas/userSchema";
+import { postUser } from "@/controllers/userController";
 
 /* ---------------- Schema ---------------- */
-const formSchema = z.object({
-  firstName: z.string().min(3, "First name must be at least 3 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.email("Invalid email address"),
-  phoneNumber: z.string().min(8, "Phone number is required"),
-  address: z.string().optional(),
-  city: z.string().min(1, "City is required"),
-  postalCode: z.string().optional(),
-  country: z.string().min(1, "Country is required"),
-  state: z.string().optional(),
-});
+// const formSchema = z.object({
+//   firstName: z.string().min(3, "First name must be at least 3 characters"),
+//   lastName: z.string().min(2, "Last name must be at least 2 characters"),
+//   email: z.email("Invalid email address"),
+//   password: z
+//     .string()
+//     .min(6, "Password must be at least 6 characters")
+//     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+//     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+//     .regex(/[0-9]/, "Password must contain at least one number")
+//     .regex(
+//       /[!@#$%^&*(),.?":{}|<>]/,
+//       "Password must contain at least one special character"
+//     ),
+//   phoneNumber: z.string().min(11, "Phone number must be at least 11 digits"),
+//   address: z.string().optional(),
+//   city: z.string().min(1, "City is required"),
+//   postalCode: z.string().optional(),
+//   country: z.string().min(1, "Country is required"),
+//   state: z.string().optional(),
+// });
 
 /* ---------------- Component ---------------- */
 const RegisterForm = () => {
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(userRegisterSchema),
     mode: "onChange",
     defaultValues: {
       firstName: "",
@@ -49,8 +59,13 @@ const RegisterForm = () => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    // TEST: Empty object validation check for backend
+    // const testResult = await postUser({});
+    // console.log("Backend validation result:", testResult);
+    //save the user in database
+    const result = await postUser(values);
+    alert(result.message);
   };
 
   return (
@@ -67,6 +82,7 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      value={field.value || ""}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Enter your first name"
@@ -88,6 +104,7 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      value={field.value || ""}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Enter your last name"
@@ -124,7 +141,29 @@ const RegisterForm = () => {
               )}
             />
 
-            {/* Phone */}
+            {/* Password */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Password*</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="password"
+                      disabled={isSubmitting}
+                      placeholder="Enter your password"
+                      className="md:w-80 lg:w-88 w-full h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+            {/* Phone Number */}
             <FormField
               control={form.control}
               name="phoneNumber"
@@ -134,7 +173,8 @@ const RegisterForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       disabled={isSubmitting}
                       placeholder="Enter your phone number"
                       className="md:w-80 lg:w-88 w-full h-11"
@@ -144,27 +184,27 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
+            {/* Address */}
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem className="w-full md:w-auto">
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={isSubmitting}
+                      placeholder="Write Your Address"
+                      className="md:w-80 lg:w-88 w-full  h-11"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          {/* Address */}
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="w-full md:w-auto">
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    disabled={isSubmitting}
-                    placeholder="Address Line 1"
-                    className="w-full h-11"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="flex justify-between items-center md:flex-row flex-col gap-6">
             {/* City */}
             <FormField
@@ -261,7 +301,7 @@ const RegisterForm = () => {
 
             <Button
               type="submit"
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting}
               className="w-48 h-11 cursor-pointer"
             >
               Register
