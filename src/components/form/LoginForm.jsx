@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,7 +32,7 @@ const LoginForm = () => {
   const router = useRouter();
   //to get the desired path before login
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl" || "/");
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const form = useForm({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -125,16 +124,13 @@ const LoginForm = () => {
           />
 
           <div className="flex justify-between items-center gap-4 lg:flex-row flex-col">
-            <div className="flex gap-1 items-center">
-              <p>Don’t have an account?</p>
-              <Link href={"/register"} className="text-green-800 font-bold">
-                Register
-              </Link>
-            </div>
+            <Link href={"/register"} className="text-green-800 font-semibold">
+              Create Account?
+            </Link>
 
             <Button
               type="submit"
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting}
               className="w-48 h-11 cursor-pointer"
             >
               Login

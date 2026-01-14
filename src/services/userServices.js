@@ -50,3 +50,20 @@ export const registerUser = async (payload) => {
       }
     : { success: false, message: "Failed to create user" };
 };
+
+//using google login
+export async function saveOAuthUser(user, account) {
+  const payload = {
+    ...user,
+    provider: account.provider,
+    providerId: account.providerAccountId,
+    role: "user",
+    createdAt: new Date().toISOString(),
+  };
+  if (!user.email) return false;
+  const isExist = await findUserByEmail(user.email);
+  if (!isExist) {
+    await createUser(payload);
+  }
+  return true;
+}

@@ -10,23 +10,27 @@ import {
   NavigationMenuLink,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Crop, Menu, X } from "lucide-react";
+import { Crop, Menu, ShoppingCart, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/form/LogoutButton";
 import NavbarDropdown from "./NavbarDropdown";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function MainHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const session = useSession();
-  console.log(session);
+  const path = usePathname();
+  //console.log(session);
   const navLinks = [
     { title: "Home", href: "/" },
-    { title: "Products", href: "/products" },
     { title: "About", href: "/about" },
+    { title: "Products", href: "/products" },
+    { title: "Contact", href: "/contact" },
   ];
   return (
-    <header className="w-full border-b border-border bg-background py-3">
-      <div className="mx-auto flex items-center justify-between container max-w-[95%]">
+    <header className="w-full border-b border-border bg-background py-4">
+      <div className="mx-auto flex items-center justify-between w-11/12">
         {/* Left: Logo + Name */}
         <div className="flex items-center gap-1 relative">
           <div>
@@ -77,7 +81,11 @@ export default function MainHeader() {
                 <NavigationMenuLink asChild>
                   <Link
                     href={link.href}
-                    className="px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md"
+                    className={cn(
+                      "px-3 py-2 text-base font-medium transition-colors",
+                      "hover:text-green-800",
+                      path === link.href && "text-green-800"
+                    )}
                   >
                     {link.title}
                   </Link>
@@ -89,7 +97,10 @@ export default function MainHeader() {
 
         {/* Right: Login / Register */}
 
-        <div>
+        <div className="flex gap-4 items-center">
+          <button className="cursor-pointer text-green-800">
+            <ShoppingCart className="w-6 h-6" />
+          </button>
           {session.status === "authenticated" ? (
             <NavbarDropdown />
           ) : (

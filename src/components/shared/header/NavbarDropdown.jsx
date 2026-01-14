@@ -17,18 +17,18 @@ import Link from "next/link";
 
 const NavbarDropdown = () => {
   const session = useSession();
-  //console.log(session);
+  //   console.log(session);
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Image
-            src={placeholder}
+            src={session?.data?.user?.image || placeholder}
             loading="eager"
             alt="Placeholder login"
             width={100}
             height={100}
-            className="rounded-lg lg:w-12 lg:h-12 w-10 h-10 cursor-pointer"
+            className="rounded-lg w-10 h-10 cursor-pointer"
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent

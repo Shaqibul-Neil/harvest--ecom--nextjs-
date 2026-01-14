@@ -1,0 +1,501 @@
+[
+  {
+    "ProductId": "FV10001",
+    "title": "Fresh Apple",
+    "slug": "fresh-apple",
+    "category": "Fruits",
+    "isFeatured": true,
+    "unit": "1 kg",
+    "tags": ["organic", "fresh", "seasonal"],
+    "mainImage": "https://i.postimg.cc/1zRQ6Hj7/apple.webp",
+    "images": [
+      "/images/products/apple-1.jpg",
+      "/images/products/apple-2.jpg",
+      "/images/products/apple-3.jpg"
+    ],
+    "rating": {
+      "average": 4.5,
+      "total": 420
+    },
+    "price": {
+      "mrp": 120,
+      "discount": 10,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10001",
+      "status": "IN_STOCK",
+      "quantity": 200
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Crisp, juicy fresh apples sourced from organic farms.",
+    "longDescription": {
+      "paragraphs": [
+        "Our fresh apples are hand-picked from trusted orchards to ensure maximum sweetness and crunch. Each apple is carefully inspected for quality and freshness.",
+        "Apples are rich in dietary fiber and vitamin C, perfect for snacking, baking, or making fresh juice.",
+        "We package apples in eco-friendly boxes to maintain freshness and deliver farm-to-table quality directly to your home."
+      ]
+    },
+    "nutrition": {
+      "calories": "52 kcal",
+      "carbohydrates": "14 g",
+      "fiber": "2.4 g",
+      "vitaminC": "4.6 mg",
+      "sugar": "10 g"
+    },
+    "specifications": {
+      "productType": "Fresh Fruit",
+      "origin": "USA",
+      "packaging": "Food Grade Box",
+      "shelfLife": "7–10 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V100",
+      "name": "Green Farm Foods",
+      "email": "greenfarm@example.com",
+      "shortDescription": "Reliable supplier of fresh fruits and vegetables."
+    },
+    "createdAt": "2026-01-14T12:00:00Z",
+    "updatedAt": "2026-01-14T12:00:00Z"
+  },
+  {
+    "ProductId": "FV10002",
+    "title": "Fresh Cauliflower",
+    "slug": "fresh-cauliflower",
+    "category": "Vegetables",
+    "isFeatured": false,
+    "unit": "1 pc",
+    "tags": ["organic", "fresh", "seasonal"],
+    "mainImage": "https://i.postimg.cc/HsS4dsCc/cauli.webp",
+    "images": [
+      "/images/products/cauliflower-1.jpg",
+      "/images/products/cauliflower-2.jpg"
+    ],
+    "rating": {
+      "average": 4.3,
+      "total": 312
+    },
+    "price": {
+      "mrp": 60,
+      "discount": 5,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10002",
+      "status": "IN_STOCK",
+      "quantity": 150
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Fresh, crisp cauliflower heads perfect for cooking.",
+    "longDescription": {
+      "paragraphs": [
+        "Our cauliflower is grown organically with no harmful chemicals. Each head is tightly packed and fresh.",
+        "Cauliflower is a versatile vegetable, great for curries, roasting, and steaming. It is rich in fiber, vitamins, and minerals.",
+        "We ensure hygienic packaging to deliver fresh produce directly to your kitchen."
+      ]
+    },
+    "nutrition": {
+      "calories": "25 kcal",
+      "carbohydrates": "5 g",
+      "fiber": "2 g",
+      "vitaminC": "48 mg",
+      "sugar": "2 g"
+    },
+    "specifications": {
+      "productType": "Fresh Vegetable",
+      "origin": "India",
+      "packaging": "Eco-friendly wrap",
+      "shelfLife": "5–7 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V101",
+      "name": "Organic Harvest",
+      "email": "organic.harvest@example.com",
+      "shortDescription": "Leading provider of fresh organic vegetables."
+    },
+    "createdAt": "2026-01-14T12:10:00Z",
+    "updatedAt": "2026-01-14T12:10:00Z"
+  },
+  {
+    "ProductId": "FV10003",
+    "title": "Fresh Coriander",
+    "slug": "fresh-coriander",
+    "category": "Vegetables",
+    "isFeatured": true,
+    "unit": "1 bunch",
+    "tags": ["organic", "fresh", "herbs"],
+    "mainImage": "https://i.postimg.cc/j2xPYBgD/coriander.webp",
+    "images": [
+      "/images/products/coriander-1.jpg",
+      "/images/products/coriander-2.jpg"
+    ],
+    "rating": {
+      "average": 4.6,
+      "total": 220
+    },
+    "price": {
+      "mrp": 30,
+      "discount": 3,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10003",
+      "status": "IN_STOCK",
+      "quantity": 180
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Fresh coriander leaves to enhance flavor in your dishes.",
+    "longDescription": {
+      "paragraphs": [
+        "Our coriander is hand-picked and washed, ensuring the freshest leaves for cooking.",
+        "Rich in flavor, coriander is a staple herb used in multiple cuisines for seasoning and garnishing.",
+        "Carefully packed to preserve aroma and freshness until it reaches your kitchen."
+      ]
+    },
+    "nutrition": {
+      "calories": "23 kcal",
+      "carbohydrates": "4 g",
+      "fiber": "3 g",
+      "vitaminC": "27 mg",
+      "sugar": "0.9 g"
+    },
+    "specifications": {
+      "productType": "Fresh Herb",
+      "origin": "India",
+      "packaging": "Bunch pack",
+      "shelfLife": "3–4 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V102",
+      "name": "Herbal Greens",
+      "email": "herbal.greens@example.com",
+      "shortDescription": "Fresh herbs supplier with top quality produce."
+    },
+    "createdAt": "2026-01-14T12:20:00Z",
+    "updatedAt": "2026-01-14T12:20:00Z"
+  },
+  {
+    "ProductId": "FV10004",
+    "title": "Fresh Nuts",
+    "slug": "fresh-nuts",
+    "category": "Snacks",
+    "isFeatured": false,
+    "unit": "250g",
+    "tags": ["organic", "healthy", "snack"],
+    "mainImage": "https://i.postimg.cc/4dZhprgT/nut.webp",
+    "images": [
+      "/images/products/nuts-1.jpg",
+      "/images/products/nuts-2.jpg"
+    ],
+    "rating": {
+      "average": 4.8,
+      "total": 340
+    },
+    "price": {
+      "mrp": 250,
+      "discount": 25,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10004",
+      "status": "IN_STOCK",
+      "quantity": 100
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Premium quality fresh mixed nuts, perfect for healthy snacking.",
+    "longDescription": {
+      "paragraphs": [
+        "Our nuts are sourced from top farms and packed carefully to maintain freshness and crunch.",
+        "Rich in protein, healthy fats, and essential nutrients, perfect for snacking or adding to recipes.",
+        "Delivered in sealed eco-friendly packs ensuring long shelf life and quality."
+      ]
+    },
+    "nutrition": {
+      "calories": "607 kcal",
+      "carbohydrates": "21 g",
+      "fiber": "7 g",
+      "vitaminC": "0 mg",
+      "sugar": "4 g"
+    },
+    "specifications": {
+      "productType": "Nuts",
+      "origin": "USA",
+      "packaging": "Sealed pouch",
+      "shelfLife": "6 months",
+      "storage": "Store in cool, dry place"
+    },
+    "vendor": {
+      "id": "V103",
+      "name": "NutriFarm",
+      "email": "nutrifarm@example.com",
+      "shortDescription": "Supplier of fresh and healthy nuts."
+    },
+    "createdAt": "2026-01-14T12:30:00Z",
+    "updatedAt": "2026-01-14T12:30:00Z"
+  },
+  {
+    "ProductId": "FV10005",
+    "title": "Passion Fruit",
+    "slug": "passion-fruit",
+    "category": "Fruits",
+    "isFeatured": false,
+    "unit": "500g",
+    "tags": ["fresh", "exotic", "seasonal"],
+    "mainImage": "https://i.postimg.cc/44WhhL2r/passion.webp",
+    "images": [
+      "/images/products/passion-1.jpg",
+      "/images/products/passion-2.jpg"
+    ],
+    "rating": {
+      "average": 4.4,
+      "total": 180
+    },
+    "price": {
+      "mrp": 180,
+      "discount": 15,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10005",
+      "status": "IN_STOCK",
+      "quantity": 80
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Exotic passion fruits with tangy-sweet flavor and vibrant pulp.",
+    "longDescription": {
+      "paragraphs": [
+        "Our passion fruits are carefully picked at peak ripeness to ensure a tangy and sweet taste.",
+        "Rich in antioxidants, vitamins, and dietary fiber, perfect for juices, smoothies, and desserts.",
+        "Delivered in protective packaging to maintain freshness during transit."
+      ]
+    },
+    "nutrition": {
+      "calories": "97 kcal",
+      "carbohydrates": "23 g",
+      "fiber": "10 g",
+      "vitaminC": "30 mg",
+      "sugar": "11 g"
+    },
+    "specifications": {
+      "productType": "Fresh Fruit",
+      "origin": "Brazil",
+      "packaging": "Eco-friendly crate",
+      "shelfLife": "5–7 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V104",
+      "name": "Tropical Farms",
+      "email": "tropical.farms@example.com",
+      "shortDescription": "Exotic fruits supplier with best quality."
+    },
+    "createdAt": "2026-01-14T12:40:00Z",
+    "updatedAt": "2026-01-14T12:40:00Z"
+  },
+  {
+    "ProductId": "FV10006",
+    "title": "Pickle Mango",
+    "slug": "pickle-mango",
+    "category": "Condiments",
+    "isFeatured": true,
+    "unit": "400g",
+    "tags": ["spicy", "tangy", "preserved"],
+    "mainImage": "https://i.postimg.cc/CKpZVWdR/pickle.webp",
+    "images": [
+      "/images/products/pickle-1.jpg",
+      "/images/products/pickle-2.jpg"
+    ],
+    "rating": {
+      "average": 4.2,
+      "total": 95
+    },
+    "price": {
+      "mrp": 80,
+      "discount": 5,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10006",
+      "status": "IN_STOCK",
+      "quantity": 120
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Tangy and spicy pickle mangoes, naturally preserved.",
+    "longDescription": {
+      "paragraphs": [
+        "Our pickle mangoes are prepared using traditional methods, preserving the authentic tangy flavor.",
+        "Perfect condiment to accompany meals, adds zest and spice to any dish.",
+        "Packaged hygienically for long shelf life and delivered fresh."
+      ]
+    },
+    "nutrition": {
+      "calories": "60 kcal",
+      "carbohydrates": "12 g",
+      "fiber": "1 g",
+      "vitaminC": "5 mg",
+      "sugar": "10 g"
+    },
+    "specifications": {
+      "productType": "Pickle",
+      "origin": "India",
+      "packaging": "Glass jar",
+      "shelfLife": "12 months",
+      "storage": "Store in cool, dry place"
+    },
+    "vendor": {
+      "id": "V105",
+      "name": "Pickle House",
+      "email": "picklehouse@example.com",
+      "shortDescription": "Traditional pickles with authentic taste."
+    },
+    "createdAt": "2026-01-14T12:50:00Z",
+    "updatedAt": "2026-01-14T12:50:00Z"
+  },
+  {
+    "ProductId": "FV10007",
+    "title": "Fresh Pomegranate",
+    "slug": "fresh-pomegranate",
+    "category": "Fruits",
+    "isFeatured": false,
+    "unit": "1 kg",
+    "tags": ["organic", "fresh", "seasonal"],
+    "mainImage": "https://i.postimg.cc/026rK8wN/pome.webp",
+    "images": [
+      "/images/products/pomegranate-1.jpg",
+      "/images/products/pomegranate-2.jpg",
+      "/images/products/pomegranate-3.jpg"
+    ],
+    "rating": {
+      "average": 4.4,
+      "total": 578
+    },
+    "price": {
+      "mrp": 299,
+      "discount": 50,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10007",
+      "status": "IN_STOCK",
+      "quantity": 100
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Premium quality fresh and organic pomegranates, carefully selected.",
+    "longDescription": {
+      "paragraphs": [
+        "Our fresh pomegranates are sourced directly from trusted organic farms, ensuring superior taste, vibrant color, and rich nutritional value.",
+        "Hand-picked to maintain freshness and quality standards.",
+        "Perfect for fresh consumption, juices, smoothies, or healthy salads."
+      ]
+    },
+    "nutrition": {
+      "calories": "83 kcal",
+      "carbohydrates": "18.7 g",
+      "fiber": "4 g",
+      "vitaminC": "10 mg",
+      "sugar": "13.7 g"
+    },
+    "specifications": {
+      "productType": "Fresh Fruit",
+      "origin": "India",
+      "packaging": "Food Grade Box",
+      "shelfLife": "5–7 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V102",
+      "name": "Ocean Crate",
+      "email": "oceancrate@example.com",
+      "shortDescription": "Trusted supplier of fresh fruits."
+    },
+    "createdAt": "2026-01-14T12:00:00Z",
+    "updatedAt": "2026-01-14T12:00:00Z"
+  },
+  {
+    "ProductId": "FV10008",
+    "title": "Fresh Tomato",
+    "slug": "fresh-tomato",
+    "category": "Vegetables",
+    "isFeatured": true,
+    "unit": "1 kg",
+    "tags": ["organic", "fresh", "red"],
+    "mainImage": "https://i.postimg.cc/3RJx87T6/tomato.webp",
+    "images": [
+      "/images/products/tomato-1.jpg",
+      "/images/products/tomato-2.jpg",
+      "/images/products/tomato-3.jpg"
+    ],
+    "rating": {
+      "average": 4.1,
+      "total": 290
+    },
+    "price": {
+      "mrp": 40,
+      "discount": 5,
+      "discountType": "PERCENT",
+      "currency": "USD"
+    },
+    "stock": {
+      "sku": "FV10008",
+      "status": "IN_STOCK",
+      "quantity": 250
+    },
+    "dealTimer": {
+      "endDate": "2026-09-30T19:15:10-07:00"
+    },
+    "shortDescription": "Fresh, juicy tomatoes perfect for cooking and salads.",
+    "longDescription": {
+      "paragraphs": [
+        "Our fresh tomatoes are sourced from local farms and carefully selected for size, color, and taste.",
+        "Rich in vitamins, antioxidants, and flavor, perfect for sauces, salads, and cooking.",
+        "Delivered in eco-friendly packaging to maintain maximum freshness."
+      ]
+    },
+    "nutrition": {
+      "calories": "18 kcal",
+      "carbohydrates": "3.9 g",
+      "fiber": "1.2 g",
+      "vitaminC": "13 mg",
+      "sugar": "2.6 g"
+    },
+    "specifications": {
+      "productType": "Fresh Vegetable",
+      "origin": "India",
+      "packaging": "Plastic crate",
+      "shelfLife": "5–7 days",
+      "storage": "Keep refrigerated"
+    },
+    "vendor": {
+      "id": "V106",
+      "name": "Farm Fresh Co",
+      "email": "farmfresh@example.com",
+      "shortDescription": "Local farm fresh produce supplier."
+    },
+    "createdAt": "2026-01-14T13:00:00Z",
+    "updatedAt": "2026-01-14T13:00:00Z"
+  }
+]

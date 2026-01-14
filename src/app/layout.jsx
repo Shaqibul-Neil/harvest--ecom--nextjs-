@@ -1,17 +1,33 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MainHeader from "@/components/shared/header/MainHeader";
 import Provider from "@/provider/Provider";
 import { Toaster } from "react-hot-toast";
+import Footer from "@/components/shared/footer/Footer";
+import localFont from "next/font/local";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const poppins = localFont({
+  src: [
+    {
+      path: "./../fonts/Poppins-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./../fonts/Poppins-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "./../fonts/Poppins-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "./../fonts/Poppins-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
 });
 
 export const metadata = {
@@ -23,13 +39,13 @@ export default function RootLayout({ children }) {
   return (
     <Provider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${poppins.className} antialiased`}>
           {/* Header */}
           <MainHeader />
           {/* content */}
-          <main>{children}</main>
+          <main className="min-h-screen">{children}</main>
+          {/* Footer */}
+          <Footer />
           {/* Toast */}
           <Toaster
             position="top-center"
