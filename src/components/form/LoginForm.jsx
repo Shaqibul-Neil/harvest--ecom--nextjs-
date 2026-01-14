@@ -76,10 +76,15 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-2xl shadow-slate-100">
+      <div className="space-y-3">
+         <h1 className="text-3xl font-black text-slate-800 tracking-tight">Welcome Back</h1>
+         <p className="text-slate-400 font-bold text-sm">Please enter your credentials to access your account</p>
+      </div>
+
       {/* Login Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 my-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Email */}
           <FormField
             control={form.control}
@@ -87,17 +92,17 @@ const LoginForm = () => {
             autoComplete="off"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Email*</FormLabel>
+                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="email"
                     disabled={isSubmitting}
                     placeholder="Enter your email address"
-                    className="w-full h-11"
+                    className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[0.65rem] font-bold" />
               </FormItem>
             )}
           />
@@ -108,49 +113,52 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Password*</FormLabel>
+                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Password</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="password"
                     disabled={isSubmitting}
                     placeholder="Enter your password"
-                    className="w-full h-11"
+                    className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-[0.65rem] font-bold" />
               </FormItem>
             )}
           />
 
-          <div className="flex justify-between items-center gap-4 lg:flex-row flex-col">
-            <Link href={"/register"} className="text-green-800 font-semibold">
+          <div className="flex justify-between items-center gap-6 pt-2">
+            <Link href={"/register"} className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors">
               Create Account?
             </Link>
 
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-48 h-11 cursor-pointer"
+              className="px-10 h-14 bg-slate-900 text-white hover:bg-green-600 transition-all shadow-xl shadow-slate-100"
             >
               Login
             </Button>
           </div>
         </form>
       </Form>
+      
       {/* Divider */}
-      <div className="flex items-center justify-center gap-2 my-3">
-        <div className="h-px w-16 bg-gray-400"></div>
-        <span className="text-sm text-primary">or</span>
-        <div className="h-px w-16 bg-gray-400"></div>
-      </div>
-      {/* Social Logins */}
-      <div className="md:w-96 mx-auto">
-        <div className="flex items-center gap-3">
-          <GoogleLoginInButton />
-          <FacebookLoginButton />
-          <TwitterLoginButton />
+      <div className="relative py-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-slate-100"></div>
         </div>
+        <div className="relative flex justify-center text-[0.65rem] uppercase font-black tracking-widest">
+          <span className="bg-white px-4 text-slate-400">Or continue with</span>
+        </div>
+      </div>
+
+      {/* Social Logins */}
+      <div className="flex items-center justify-center gap-4">
+        <GoogleLoginInButton />
+        <FacebookLoginButton />
+        <TwitterLoginButton />
       </div>
     </div>
   );

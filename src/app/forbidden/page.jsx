@@ -20,19 +20,19 @@ export default function Forbidden() {
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="mx-auto mb-8"
+          className="mx-auto mb-10"
         >
-          <div className="relative w-32 h-32 mx-auto">
+          <div className="relative w-36 h-36 mx-auto">
             {/* Outer Ring */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 rounded-full border-2 border-dashed border-red-300"
+              className="absolute inset-0 rounded-full border-4 border-dashed border-red-200"
             />
             {/* Inner Circle with Lock */}
-            <div className="absolute inset-4 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-xl shadow-red-500/30">
+            <div className="absolute inset-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-2xl shadow-red-500/40 border-4 border-white/20">
               <svg
-                className="w-12 h-12 text-white"
+                className="w-14 h-14 text-white"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ export default function Forbidden() {
                   transition={{ duration: 1.5, delay: 0.5 }}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
@@ -56,10 +56,10 @@ export default function Forbidden() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mb-4"
+          className="mb-6"
         >
-          <span className="inline-block px-4 py-1.5 bg-red-100 text-red-700 text-sm font-semibold rounded-full tracking-wider">
-            ERROR 403
+          <span className="inline-block px-6 py-2 bg-red-50 text-red-600 text-[0.65rem] font-black rounded-full tracking-[0.25em] border border-red-100 uppercase">
+            Error 403
           </span>
         </motion.div>
 
@@ -68,7 +68,7 @@ export default function Forbidden() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight"
+          className="text-5xl md:text-6xl font-black text-slate-800 mb-6 tracking-tight"
         >
           Access{" "}
           <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
@@ -81,7 +81,7 @@ export default function Forbidden() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="text-gray-600 text-lg mb-8 max-w-md mx-auto leading-relaxed"
+          className="text-slate-500 text-lg mb-10 max-w-md mx-auto leading-loose font-medium"
         >
           Sorry, you don't have permission to access this page. Please contact
           the administrator or return to safety.
@@ -92,13 +92,13 @@ export default function Forbidden() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center"
         >
           <Link
             href="/"
-            className="group relative inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5"
+            className="group relative inline-flex items-center justify-center px-10 py-4 bg-slate-900 text-white font-black text-xs uppercase tracking-widest rounded-full overflow-hidden transition-all duration-300 hover:bg-red-600 hover:shadow-2xl hover:shadow-red-500/30 active:scale-95"
           >
-            <span className="relative z-10 flex items-center gap-2">
+            <span className="relative z-10 flex items-center gap-3">
               <svg
                 className="w-5 h-5 transition-transform group-hover:-translate-x-1"
                 fill="none"
@@ -108,20 +108,19 @@ export default function Forbidden() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={3}
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
               Go Home
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
 
           <Link
             href="/login"
-            className="group inline-flex items-center justify-center px-8 py-3.5 bg-white text-red-700 font-semibold rounded-xl border-2 border-red-200 transition-all duration-300 hover:border-red-400 hover:bg-red-50 hover:-translate-y-0.5"
+            className="group inline-flex items-center justify-center px-10 py-4 bg-white text-slate-800 font-black text-xs uppercase tracking-widest rounded-full border-2 border-slate-100 transition-all duration-300 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-xl shadow-slate-100"
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-3">
               Sign In
               <svg
                 className="w-5 h-5 transition-transform group-hover:translate-x-1"
@@ -132,7 +131,7 @@ export default function Forbidden() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={3}
                   d="M14 5l7 7m0 0l-7 7m7-7H3"
                 />
               </svg>

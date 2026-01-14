@@ -7,10 +7,12 @@ import AddToCartButton from "../shared/button/AddToCartButton";
 import IconButton from "../shared/button/IconButton";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ product }) => {
   const [hoverState, setHoverState] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -20,7 +22,7 @@ const ProductCard = ({ product }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   // Destructure product data
-  const { category, mainImage, price, rating, unit, title, sellingPrice } =
+  const { _id, category, mainImage, price, rating, unit, title, sellingPrice } =
     product || {};
 
   // Star Rating Helper
@@ -72,7 +74,10 @@ const ProductCard = ({ product }) => {
               <IconButton icon={Heart} />
 
               {/* Quick View */}
-              <IconButton icon={Eye} />
+              <IconButton
+                icon={Eye}
+                onClick={() => router.push(`/products/${_id}`)}
+              />
 
               {/* Compare */}
               <IconButton icon={GitCompare} />

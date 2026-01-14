@@ -3,9 +3,11 @@ import { MdOutlineStart } from "react-icons/md";
 
 const SubHeadings = ({ children }) => {
   return (
-    <div className="flex gap-1">
-      <MdOutlineStart className="w-6 h-6 text-green-600" />
-      <h4 className="text-green-600 font-semibold">{children}</h4>
+    <div className="flex items-center gap-2">
+      <div className="w-6 h-px bg-green-500 rounded-full" />
+      <h4 className="text-green-600 font-black text-xs uppercase tracking-[0.25em]">
+        {children}
+      </h4>
     </div>
   );
 };

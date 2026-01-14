@@ -12,13 +12,13 @@ const FeaturedProducts = async () => {
   console.log(result);
   return (
     <div className="space-y-16 py-12">
-      <div className="space-y-4">
+      <div className="space-y-6">
         <SubHeadings>Featured Products</SubHeadings>
-        <div className="flex lg:justify-between lg:items-center lg:flex-row flex-col space-y-4">
+        <div className="flex lg:justify-between lg:items-end lg:flex-row flex-col gap-6">
           <MainHeadings highlight="Collection">Our Featured </MainHeadings>
           <div className="flex gap-4">
-            <button className="px-6 py-2.5 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-all shadow-lg shadow-green-200">
-              Go to Shop
+            <button className="px-10 py-4 bg-slate-900 text-white rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-green-600 transition-all shadow-2xl shadow-slate-200 active:scale-95">
+              Explore Shop
             </button>
           </div>
         </div>

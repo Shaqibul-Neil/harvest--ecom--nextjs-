@@ -1,8 +1,6 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -12,7 +10,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Crop, Menu, ShoppingCart, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import LogoutButton from "@/components/form/LogoutButton";
 import NavbarDropdown from "./NavbarDropdown";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -44,18 +41,18 @@ export default function MainHeader() {
             </button>
             {/* SM and md Navigation */}
             <div
-              className={`bg-green-50 dark:bg-black border-l-4 border-green-200 rounded-xl dark:border-gray-700 z-20 transform transition-all duration-500 top-full absolute w-48 left-0 ${
+              className={`bg-white dark:bg-black border-l-4 border-green-500 rounded-[2rem] shadow-2xl z-20 transform transition-all duration-500 top-full absolute w-56 left-0 ${
                 menuOpen
                   ? "translate-y-2 opacity-100 pointer-events-auto"
                   : "-translate-y-5 opacity-0 pointer-events-none"
               } `}
             >
-              <nav className="flex flex-col gap-1 px-6 py-4">
+              <nav className="flex flex-col gap-2 px-8 py-6">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"
+                    className="text-slate-600 dark:text-gray-200 font-black text-[0.7rem] uppercase tracking-widest hover:text-green-600 transition-colors"
                     onClick={() => setMenuOpen(false)} // close menu on click
                   >
                     {link.title}
@@ -66,28 +63,42 @@ export default function MainHeader() {
           </div>
           {/* Logo */}
           <div>
-            <Link href={"/"} className="flex items-center gap-1 text-green-800">
-              <Crop className="hidden lg:block" />
-              <span className="font-bold text-2xl ">Harvest</span>
+            <Link
+              href={"/"}
+              className="flex items-center gap-2 text-slate-800 group"
+            >
+              <div className="w-10 h-10 bg-green-50 flex items-center justify-center rounded-2xl group-hover:bg-green-600 group-hover:text-white transition-all duration-500">
+                <Crop className="w-6 h-6" />
+              </div>
+              <span className="font-black text-2xl tracking-tighter">
+                Harvest
+              </span>
             </Link>
           </div>
         </div>
 
         {/* Middle: Navigation Menu */}
         <NavigationMenu className="hidden lg:block">
-          <NavigationMenuList className="flex gap-4">
+          <NavigationMenuList className="flex gap-6">
             {navLinks.map((link, i) => (
               <NavigationMenuItem key={i}>
                 <NavigationMenuLink asChild>
                   <Link
                     href={link.href}
                     className={cn(
-                      "px-3 py-2 text-base font-medium transition-colors",
-                      "hover:text-green-800",
-                      path === link.href && "text-green-800"
+                      "px-4 py-2 text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all relative overflow-hidden group",
+                      path === link.href
+                        ? "text-green-600"
+                        : "text-slate-400 hover:text-slate-800"
                     )}
                   >
                     {link.title}
+                    <div
+                      className={cn(
+                        "absolute bottom-0 left-0 h-0.5 bg-green-500 transition-all duration-500",
+                        path === link.href ? "w-full" : "w-0 group-hover:w-full"
+                      )}
+                    />
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -97,16 +108,19 @@ export default function MainHeader() {
 
         {/* Right: Login / Register */}
 
-        <div className="flex gap-4 items-center">
-          <button className="cursor-pointer text-green-800">
+        <div className="flex gap-6 items-center">
+          <button className="cursor-pointer text-slate-400 hover:text-green-600 transition-colors relative">
             <ShoppingCart className="w-6 h-6" />
+            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[0.6rem] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+              0
+            </span>
           </button>
           {session.status === "authenticated" ? (
             <NavbarDropdown />
           ) : (
             <Link
               href="/login"
-              className="md:w-28 md:h-10 w-20 h-8 bg-green-800 text-white hover:text-green-800 hover:bg-white rounded-lg flex justify-center transition-all duration-500 items-center border border-transparent hover:border-green-800 text-sm md:text-base"
+              className="px-8 py-3 bg-slate-900 text-white hover:bg-green-600 rounded-full flex justify-center transition-all duration-500 items-center font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-100"
             >
               Login
             </Link>

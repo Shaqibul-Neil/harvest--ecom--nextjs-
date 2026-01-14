@@ -75,16 +75,21 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-2xl shadow-slate-100">
+      <div className="space-y-3">
+         <h1 className="text-3xl font-black text-slate-800 tracking-tight">Create Account</h1>
+         <p className="text-slate-400 font-bold text-sm">Join Harvest and start your premium shopping experience</p>
+      </div>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 my-4">
-          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>First Name*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">First Name*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -92,10 +97,10 @@ const RegisterForm = () => {
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Enter your first name"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
@@ -105,8 +110,8 @@ const RegisterForm = () => {
               control={form.control}
               name="lastName"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Last Name*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Last Name*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -114,16 +119,14 @@ const RegisterForm = () => {
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Enter your last name"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
             {/* Email */}
             <FormField
               control={form.control}
@@ -131,18 +134,18 @@ const RegisterForm = () => {
               type="email"
               autoComplete="off"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Email*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Email Address*</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       {...field}
                       disabled={isSubmitting}
                       placeholder="Enter your email address"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
@@ -152,30 +155,29 @@ const RegisterForm = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Password*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Password*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
                       disabled={isSubmitting}
                       placeholder="Enter your password"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
-          </div>
-          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+
             {/* Phone Number */}
             <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Phone Number*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -183,10 +185,10 @@ const RegisterForm = () => {
                       inputMode="numeric"
                       disabled={isSubmitting}
                       placeholder="Enter your phone number"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
@@ -195,40 +197,39 @@ const RegisterForm = () => {
               control={form.control}
               name="address"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Address</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Address</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Write Your Address"
-                      className="md:w-80 lg:w-88 w-full  h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
-          </div>
-          <div className="flex justify-between items-center md:flex-row flex-col gap-6">
+
             {/* City */}
             <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>City*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">City*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="City"
-                      className="md:w-80 lg:w-88 w-full  h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
@@ -238,40 +239,39 @@ const RegisterForm = () => {
               control={form.control}
               name="postalCode"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Post Code</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Post Code</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="number"
                       disabled={isSubmitting}
                       placeholder="Post Code"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
-          </div>
-          <div className="flex justify-between items-center md:flex-row flex-col gap-5">
+
             {/* Country */}
             <FormField
               control={form.control}
               name="country"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Country*</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Country*</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Country"
-                      className="md:w-80 lg:w-88 w-full  h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
@@ -281,26 +281,27 @@ const RegisterForm = () => {
               control={form.control}
               name="state"
               render={({ field }) => (
-                <FormItem className="w-full md:w-auto">
-                  <FormLabel>Region / State</FormLabel>
+                <FormItem>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Region / State</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="text"
                       disabled={isSubmitting}
                       placeholder="Region / State"
-                      className="md:w-80 lg:w-88 w-full h-11"
+                      className="h-14 rounded-2xl border-slate-100 bg-slate-50/50"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[0.65rem] font-bold" />
                 </FormItem>
               )}
             />
           </div>
-          <div className="flex justify-between items-center gap-4 md:flex-row flex-col">
-            <div className="flex gap-1 items-center">
-              <p>Have an account?</p>
-              <Link href={"/login"} className="text-green-800 font-bold">
+
+          <div className="flex justify-between items-center gap-6 pt-6 flex-wrap">
+            <div className="flex gap-2 items-center">
+              <p className="text-slate-400 font-bold text-sm">Have an account?</p>
+              <Link href={"/login"} className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors">
                 Login
               </Link>
             </div>
@@ -308,7 +309,7 @@ const RegisterForm = () => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-48 h-11 cursor-pointer"
+              className="px-10 h-14 bg-slate-900 text-white hover:bg-green-600 transition-all shadow-xl shadow-slate-100"
             >
               Register
             </Button>

@@ -1,45 +1,37 @@
-import React from "react";
-
-export default function ProductCardSkeleton() {
+const ProductCardSkeleton = () => {
   return (
-    <div className="relative rounded-3xl border border-gray-100 bg-white shadow-sm w-full animate-pulse">
+    <div className="relative rounded-[2rem] border border-slate-50 bg-white shadow-xl shadow-slate-100/50 w-full animate-pulse overflow-hidden">
       {/* Product Image Placeholder */}
-      <div className="relative mb-4 flex h-50 w-full items-center justify-center rounded-t-2xl bg-gray-200 overflow-hidden">
-        {/* empty placeholder */}
-      </div>
+      <div className="h-52 w-full bg-slate-100" />
 
-      {/* Content */}
-      <div className="space-y-2 p-4">
-        <div className="space-y-1">
+      {/* Content Area */}
+      <div className="bg-slate-50/50 space-y-4 p-6">
+        <div className="space-y-3">
           {/* Category & Rating Row */}
           <div className="flex items-center justify-between">
-            <span className="h-3 w-16 bg-gray-300 rounded"></span>
-            <div className="flex gap-0.5">
-              <span className="h-3 w-3 bg-gray-300 rounded-full"></span>
-              <span className="h-3 w-3 bg-gray-300 rounded-full"></span>
-              <span className="h-3 w-3 bg-gray-300 rounded-full"></span>
-              <span className="h-3 w-3 bg-gray-300 rounded-full"></span>
-              <span className="h-3 w-3 bg-gray-300 rounded-full"></span>
+            <div className="h-3 w-16 bg-slate-200 rounded-full" />
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-3 w-3 bg-slate-200 rounded-full" />
+              ))}
             </div>
           </div>
 
           {/* Title */}
-          <div className="h-4 w-3/4 bg-gray-300 rounded mt-1"></div>
+          <div className="h-5 w-3/4 bg-slate-200 rounded-lg" />
 
           {/* Price & Unit Row */}
-          <div className="flex items-center justify-between mt-2 pt-1">
-            <div className="flex items-center gap-2">
-              <div className="h-5 w-12 bg-gray-300 rounded"></div>
-            </div>
-
-            {/* Unit / Weight */}
-            <div className="h-4 w-10 bg-gray-300 rounded"></div>
+          <div className="flex items-center justify-between pt-2">
+            <div className="h-6 w-20 bg-slate-200 rounded-lg" />
+            <div className="h-6 w-12 bg-white rounded-lg border border-slate-100" />
           </div>
         </div>
 
         {/* Action Button Placeholder */}
-        <div className="h-10 w-full bg-gray-300 rounded-lg mt-2"></div>
+        <div className="h-12 w-full bg-slate-200 rounded-full" />
       </div>
     </div>
   );
-}
+};
+
+export default ProductCardSkeleton;
