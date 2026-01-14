@@ -1,20 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Eye, GitCompare, Heart, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import AddToCartButton from "../shared/button/AddToCartButton";
+import IconButton from "../shared/button/IconButton";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProductCard = ({ product }) => {
+  const [hoverState, setHoverState] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   // Destructure product data
-  const { category, mainImage, price, rating, unit, title } = product || {};
-
-  // Calculate Discounted Price
-  const discountAmount =
-    price?.discountType === "PERCENT"
-      ? (price.mrp * price.discount) / 100
-      : price?.discount;
-
-  const sellingPrice = price?.mrp - discountAmount;
+  const { category, mainImage, price, rating, unit, title, sellingPrice } =
+    product || {};
 
   // Star Rating Helper
   const renderStars = (avgRating) => {
@@ -33,27 +40,53 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group relative w-[280px] rounded-3xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md hover:border-green-100 w-full">
-      {/* NEW Badge - Vertical Text */}
-
+    <div
+      className="relative rounded-[2rem] shadow-xl shadow-slate-200/50 bg-white border border-slate-50 transition-all duration-500 hover:shadow-2xl hover:shadow-green-100/50 hover:border-green-100 w-full group overflow-hidden"
+      onMouseEnter={() => setHoverState(true)}
+      onMouseLeave={() => setHoverState(false)}
+    >
       {/* Product Image */}
-      <div className="relative mb-4 flex h-[200px] w-full items-center justify-center rounded-2xl bg-white overflow-hidden">
-        <Image
-          src={mainImage}
-          alt={title || "Product Image"}
-          fill
-          loading="eager"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
-        />
+      <div className="relative">
+        <div className="relative flex h-52 w-full items-center justify-center bg-white overflow-hidden p-6">
+          <Image
+            src={mainImage}
+            alt={title || "Product Image"}
+            fill
+            loading="eager"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain p-4 transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
+        {/* Hover Buttons with Framer Motion */}
+
+        <AnimatePresence>
+          {(hoverState || isMobile) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-3 absolute bottom-2 left-1/2 -translate-x-1/2"
+            >
+              {/* Wishlist */}
+              <IconButton icon={Heart} />
+
+              {/* Quick View */}
+              <IconButton icon={Eye} />
+
+              {/* Compare */}
+              <IconButton icon={GitCompare} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Content */}
-      <div className=" bg-green-50">
-        <div className="p-4 space-y-1">
+      {/* Content Area */}
+      <div className="bg-green-50/50 space-y-3 p-6">
+        <div className="space-y-2">
           {/* Category & Rating Row */}
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+            <span className="text-[0.6rem] font-black text-slate-400 uppercase tracking-[0.2em]">
               {category}
             </span>
             <div className="flex gap-0.5">
@@ -62,26 +95,32 @@ const ProductCard = ({ product }) => {
           </div>
 
           {/* Title */}
-          <h3 className="text-base font-bold text-gray-800 line-clamp-1 group-hover:text-green-700 transition-colors">
+          <h3 className="text-lg font-extrabold text-slate-800 line-clamp-1 group-hover:text-green-700 transition-colors tracking-tight">
             {title}
           </h3>
 
-          {/* Price & Unit Row */}
-          <div className="flex items-center justify-between mt-2 pt-1">
+          {/* Final Row: Price & Unit */}
+          <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-green-700">
-                ${price?.discountType ? Math.round(sellingPrice) : price?.mrp}
+              <span className="text-xl font-black text-green-700">
+                ${price?.discountType ? sellingPrice : price?.mrp}
               </span>
               {price?.discount > 0 && (
-                <span className="text-sm font-medium text-gray-400 line-through decoration-gray-400">
+                <span className="text-sm font-bold text-slate-300 line-through">
                   ${price.mrp}
                 </span>
               )}
             </div>
 
-            {/* Unit / Weight Placeholder from image */}
-            <span className="text-sm font-medium text-gray-400">{unit}</span>
+            <span className="text-xs font-bold text-slate-400 bg-white px-2 py-1 rounded-lg border border-slate-100">
+              {unit}
+            </span>
           </div>
+        </div>
+
+        {/* Action button */}
+        <div className="pt-2">
+          <AddToCartButton />
         </div>
       </div>
     </div>

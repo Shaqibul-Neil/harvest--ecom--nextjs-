@@ -29,8 +29,8 @@ export default function MainHeader() {
     { title: "Contact", href: "/contact" },
   ];
   return (
-    <header className="w-full border-b border-border bg-background py-4">
-      <div className="mx-auto flex items-center justify-between w-11/12">
+    <header className="w-full border-b border-border py-4">
+      <div className="mx-auto flex items-center justify-between w-11/12 max-w-[1440px]">
         {/* Left: Logo + Name */}
         <div className="flex items-center gap-1 relative">
           <div>

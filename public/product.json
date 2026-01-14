@@ -195,10 +195,7 @@
     "unit": "250g",
     "tags": ["organic", "healthy", "snack"],
     "mainImage": "https://i.postimg.cc/4dZhprgT/nut.webp",
-    "images": [
-      "/images/products/nuts-1.jpg",
-      "/images/products/nuts-2.jpg"
-    ],
+    "images": ["/images/products/nuts-1.jpg", "/images/products/nuts-2.jpg"],
     "rating": {
       "average": 4.8,
       "total": 340
