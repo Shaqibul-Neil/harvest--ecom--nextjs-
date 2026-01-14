@@ -8,7 +8,7 @@ export const validateUserData = async (payload) => {
   //if parsed failed
   if (!parsed.success) {
     const errors = z.treeifyError(parsed.error);
-    console.log("errors--------->", errors);
+    //console.log("errors--------->", errors);
     return {
       success: false,
       message: "Validation failed",

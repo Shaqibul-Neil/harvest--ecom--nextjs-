@@ -16,6 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { toastify } from "@/lib/toast";
+import { useRouter, useSearchParams } from "next/navigation";
+import GoogleLoginInButton from "./GoogleLoginButton";
+import TwitterLoginButton from "./TwitterLoginButton";
+import FacebookLoginButton from "./FacebookLoginButton";
 
 /* ---------------- Schema ---------------- */
 const formSchema = z.object({
@@ -25,6 +30,10 @@ const formSchema = z.object({
 
 /* ---------------- Component ---------------- */
 const LoginForm = () => {
+  const router = useRouter();
+  //to get the desired path before login
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl" || "/");
   const form = useForm({
     resolver: zodResolver(formSchema),
     mode: "onChange",
@@ -38,21 +47,38 @@ const LoginForm = () => {
 
   const onSubmit = async (values) => {
     const { email, password } = values;
-    const res = await signIn("credentials", {
+    const loginPromise = signIn("credentials", {
       redirect: false,
       email,
       password,
+    }).then((res) => {
+      //console.log(res);
+      if (!res || res.error) {
+        throw new Error("Invalid email or password");
+      }
+      return res;
     });
+    toastify(loginPromise, {
+      loading: "Logging you in...",
+      success: () => {
+        //re-route user to his desired path
+        router.push(callbackUrl);
+        return <span className="font-semibold">Logged in successfully</span>;
+      },
+      error: (err) => <span className="font-semibold">{err.message}</span>,
+    });
+
     //console.log(res);
-    if (res?.error) {
-      console.log("login failed");
-    } else {
-      console.log(`logged in ${email}`);
-    }
+    // if (res?.error) {
+    //   console.log("login failed");
+    // } else {
+    //   console.log(`logged in ${email}`);
+    // }
   };
 
   return (
     <div className="space-y-6">
+      {/* Login Form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 my-4">
           {/* Email */}
@@ -98,7 +124,7 @@ const LoginForm = () => {
             )}
           />
 
-          <div className="flex justify-between items-center gap-4 lg:flex-row md:flex-col">
+          <div className="flex justify-between items-center gap-4 lg:flex-row flex-col">
             <div className="flex gap-1 items-center">
               <p>Don’t have an account?</p>
               <Link href={"/register"} className="text-green-800 font-bold">
@@ -116,6 +142,20 @@ const LoginForm = () => {
           </div>
         </form>
       </Form>
+      {/* Divider */}
+      <div className="flex items-center justify-center gap-2 my-3">
+        <div className="h-px w-16 bg-gray-400"></div>
+        <span className="text-sm text-primary">or</span>
+        <div className="h-px w-16 bg-gray-400"></div>
+      </div>
+      {/* Social Logins */}
+      <div className="md:w-96 mx-auto">
+        <div className="flex items-center gap-3">
+          <GoogleLoginInButton />
+          <FacebookLoginButton />
+          <TwitterLoginButton />
+        </div>
+      </div>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { userRegisterSchema } from "@/schemas/userSchema";
 import { postUser } from "@/controllers/userController";
+import { handleApiError, toastify } from "@/lib/toast";
 
 /* ---------------- Schema ---------------- */
 // const formSchema = z.object({
@@ -64,8 +65,13 @@ const RegisterForm = () => {
     // const testResult = await postUser({});
     // console.log("Backend validation result:", testResult);
     //save the user in database
-    const result = await postUser(values);
-    alert(result.message);
+    toastify(postUser(values).then(handleApiError), {
+      loading: "Saving and creating account",
+      success: () => (
+        <span className="font-semibold">Account created successfully</span>
+      ),
+      error: (err) => <span className="font-semibold">{err.message}</span>,
+    });
   };
 
   return (

@@ -4,7 +4,7 @@ import React from "react";
 
 const UserCard = () => {
   const session = useSession();
-  console.log(session);
+  //console.log(session);
   return (
     <div>
       <h3>{JSON.stringify(session)}</h3>

@@ -11,9 +11,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Crop, Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/form/LogoutButton";
+import NavbarDropdown from "./NavbarDropdown";
 
 export default function MainHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const session = useSession();
+  console.log(session);
   const navLinks = [
     { title: "Home", href: "/" },
     { title: "Products", href: "/products" },
@@ -83,13 +88,18 @@ export default function MainHeader() {
         </NavigationMenu>
 
         {/* Right: Login / Register */}
-        <div className="flex gap-2">
-          <Link
-            href="/login"
-            className="md:w-28 md:h-10 w-20 h-8 bg-green-800 text-white hover:text-green-800 hover:bg-white rounded-lg flex justify-center transition-all duration-500 items-center border border-transparent hover:border-green-800 text-sm md:text-base"
-          >
-            Login
-          </Link>
+
+        <div>
+          {session.status === "authenticated" ? (
+            <NavbarDropdown />
+          ) : (
+            <Link
+              href="/login"
+              className="md:w-28 md:h-10 w-20 h-8 bg-green-800 text-white hover:text-green-800 hover:bg-white rounded-lg flex justify-center transition-all duration-500 items-center border border-transparent hover:border-green-800 text-sm md:text-base"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>
