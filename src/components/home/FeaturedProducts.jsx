@@ -9,7 +9,7 @@ import { getFeaturedProductsController } from "@/controllers/productsController"
 const FeaturedProducts = async () => {
   //fetch data
   const { result } = await getFeaturedProductsController();
-  console.log(result);
+  //console.log(result);
   return (
     <div className="space-y-16 py-12">
       <div className="space-y-6">

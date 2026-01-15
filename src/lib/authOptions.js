@@ -1,7 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
-import { saveOAuthUser } from "@/services/userServices";
+import { loginUser, saveOAuthUser } from "@/services/userServices";
 import { dbConnect } from "./dbConnect";
 
 export const authOptions = {
@@ -10,22 +9,17 @@ export const authOptions = {
     CredentialsProvider({
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
-
       credentials: {
         email: {
           label: "Email",
           type: "email",
-          placeholder: "jsmith@@gmail.com",
+          placeholder: "jsmith@gmail.com",
         },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const { email, password } = credentials;
-        const user = await dbConnect("users").findOne({ email });
-        if (!user) return null;
-        //match password
-        const isPasswordOk = await bcrypt.compare(password, user.password);
-        if (isPasswordOk) return user;
+        const user = await loginUser(credentials);
+        if (user) return user;
         return null;
       },
     }),
@@ -59,9 +53,14 @@ export const authOptions = {
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
-        token.email = user.email;
+        // to get the latest data from database
+        const dbUser = await dbConnect("users").findOne({
+          email: user.email.toLowerCase(),
+        });
+        console.log("token", token, "dbUser", dbUser);
+        token.email = dbUser?.email || user.email;
         token.name = user.name || `${user.firstName} ${user.lastName}`;
-        token.role = user.role || "user";
+        token.role = dbUser?.role || "user";
         //add image later
       }
       return token;

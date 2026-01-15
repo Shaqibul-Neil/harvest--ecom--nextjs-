@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
 
-const AddToCartButton = () => {
+const AddToCartButton = ({ product }) => {
   return (
-    <button className="addCart flex justify-center h-11 w-full items-center gap-1 bg-green-600">
+    <button
+      className="addCart flex justify-center h-11 w-full items-center gap-1 bg-green-600"
+      onClick={() => alert(product.title)}
+    >
       <div className="svg-wrapper-1">
         <div className="svg-wrapper">
           <svg

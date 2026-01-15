@@ -10,7 +10,7 @@ export const metadata = {
 const ProductDetails = async ({ params }) => {
   const { id } = await params;
   const { result } = await getSingleProductController(id);
-  console.log(result);
+  //console.log(result);
   return (
     <div>
       <ProductDetailsCard product={result} />

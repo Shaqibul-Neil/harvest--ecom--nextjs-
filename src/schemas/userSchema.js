@@ -8,7 +8,7 @@ export const userRegisterSchema = z.object({
 
   lastName: z.string().trim().min(2, "Last name must be at least 2 characters"),
 
-  email: z.email("Invalid email address"),
+  email: z.email("Invalid email address").trim().toLowerCase(),
 
   password: z
     .string()

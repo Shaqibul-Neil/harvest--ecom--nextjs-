@@ -125,7 +125,7 @@ const ProductCard = ({ product }) => {
 
         {/* Action button */}
         <div className="pt-2">
-          <AddToCartButton />
+          <AddToCartButton product={product} />
         </div>
       </div>
     </div>

@@ -16,6 +16,7 @@ import Link from "next/link";
 import { userRegisterSchema } from "@/schemas/userSchema";
 import { postUser } from "@/controllers/userController";
 import { handleApiError, toastify } from "@/lib/toast";
+import { signIn } from "next-auth/react";
 
 /* ---------------- Schema ---------------- */
 // const formSchema = z.object({
@@ -49,6 +50,7 @@ const RegisterForm = () => {
       firstName: "",
       lastName: "",
       email: "",
+      password: "",
       phoneNumber: "",
       address: "",
       city: "",
@@ -64,11 +66,26 @@ const RegisterForm = () => {
     // TEST: Empty object validation check for backend
     // const testResult = await postUser({});
     // console.log("Backend validation result:", testResult);
-    //save the user in database
-    toastify(postUser(values).then(handleApiError), {
-      loading: "Saving and creating account",
+    const registerAndLogin = async () => {
+      //register user
+      const res = await postUser(values);
+      //error handler
+      const data = await handleApiError(res);
+      //successful registration then login
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: true,
+        callbackUrl: "/",
+      });
+      return data;
+    };
+    toastify(registerAndLogin(), {
+      loading: "Saving and creating account...",
       success: () => (
-        <span className="font-semibold">Account created successfully</span>
+        <span className="font-semibold">
+          Account created! Logging you in....
+        </span>
       ),
       error: (err) => <span className="font-semibold">{err.message}</span>,
     });
@@ -77,8 +94,12 @@ const RegisterForm = () => {
   return (
     <div className="space-y-10 bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-2xl shadow-slate-100">
       <div className="space-y-3">
-         <h1 className="text-3xl font-black text-slate-800 tracking-tight">Create Account</h1>
-         <p className="text-slate-400 font-bold text-sm">Join Harvest and start your premium shopping experience</p>
+        <h1 className="text-3xl font-black text-slate-800 tracking-tight">
+          Create Account
+        </h1>
+        <p className="text-slate-400 font-bold text-sm">
+          Join Harvest and start your premium shopping experience
+        </p>
       </div>
 
       <Form {...form}>
@@ -89,7 +110,9 @@ const RegisterForm = () => {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">First Name*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    First Name*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -111,7 +134,9 @@ const RegisterForm = () => {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Last Name*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Last Name*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -135,7 +160,9 @@ const RegisterForm = () => {
               autoComplete="off"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Email Address*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Email Address*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -156,7 +183,9 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Password*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Password*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -177,7 +206,9 @@ const RegisterForm = () => {
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Phone Number*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Phone Number*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -198,7 +229,9 @@ const RegisterForm = () => {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Address</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Address
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -219,7 +252,9 @@ const RegisterForm = () => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">City*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    City*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -240,7 +275,9 @@ const RegisterForm = () => {
               name="postalCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Post Code</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Post Code
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -261,7 +298,9 @@ const RegisterForm = () => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Country*</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Country*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -282,7 +321,9 @@ const RegisterForm = () => {
               name="state"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Region / State</FormLabel>
+                  <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                    Region / State
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -300,8 +341,13 @@ const RegisterForm = () => {
 
           <div className="flex justify-between items-center gap-6 pt-6 flex-wrap">
             <div className="flex gap-2 items-center">
-              <p className="text-slate-400 font-bold text-sm">Have an account?</p>
-              <Link href={"/login"} className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors">
+              <p className="text-slate-400 font-bold text-sm">
+                Have an account?
+              </p>
+              <Link
+                href={"/login"}
+                className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors"
+              >
                 Login
               </Link>
             </div>

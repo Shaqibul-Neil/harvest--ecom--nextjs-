@@ -14,7 +14,7 @@ export const metadata = {
 const Products = async () => {
   //fetch data
   const { result } = await getAllProductsController();
-  console.log(result);
+  // console.log(result);
   return (
     <div className="space-y-8 max-w-[1440px] w-11/12 mx-auto lg:py-20 py-16">
       {/* Title section */}
