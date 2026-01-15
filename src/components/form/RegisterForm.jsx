@@ -17,6 +17,7 @@ import { userRegisterSchema } from "@/schemas/userSchema";
 import { postUser } from "@/controllers/userController";
 import { handleApiError, toastify } from "@/lib/toast";
 import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 /* ---------------- Schema ---------------- */
 // const formSchema = z.object({
@@ -43,6 +44,10 @@ import { signIn } from "next-auth/react";
 
 /* ---------------- Component ---------------- */
 const RegisterForm = () => {
+  const router = useRouter();
+  //to get the desired path before login
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const form = useForm({
     resolver: zodResolver(userRegisterSchema),
     mode: "onChange",
@@ -75,18 +80,25 @@ const RegisterForm = () => {
       await signIn("credentials", {
         email: values.email,
         password: values.password,
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
+        callbackUrl: callbackUrl,
       });
       return data;
     };
     toastify(registerAndLogin(), {
       loading: "Saving and creating account...",
-      success: () => (
-        <span className="font-semibold">
-          Account created! Logging you in....
-        </span>
-      ),
+      success: () => {
+        //re-route user to his desired path
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+        router.push(callbackUrl);
+        return (
+          <span className="font-semibold">
+            Account created! Logging you in....
+          </span>
+        );
+      },
       error: (err) => <span className="font-semibold">{err.message}</span>,
     });
   };

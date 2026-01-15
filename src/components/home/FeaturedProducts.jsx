@@ -3,10 +3,11 @@ import SubHeadings from "../shared/headings/SubHeadings";
 import MainHeadings from "../shared/headings/MainHeadings";
 
 import ProductCard from "../cards/ProductCard";
-import ProductCardSkeleton from "../shared/skeletons/ProductCardSkeleton";
 import { getFeaturedProductsController } from "@/controllers/productsController";
+//const delay = (ms)=> new Promise(resolve=>setTimeout(resolve, ms))
 
 const FeaturedProducts = async () => {
+  //await delay(10000);
   //fetch data
   const { result } = await getFeaturedProductsController();
   //console.log(result);
@@ -29,7 +30,6 @@ const FeaturedProducts = async () => {
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
-      <ProductCardSkeleton />
     </div>
   );
 };

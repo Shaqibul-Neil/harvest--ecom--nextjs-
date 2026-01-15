@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Star,
@@ -16,6 +16,7 @@ import AddToCartButton from "../shared/button/AddToCartButton";
 
 const ProductDetailsCard = ({ product }) => {
   const [activeTab, setActiveTab] = useState("details");
+  const [quantity, setQuantity] = useState(1);
 
   if (!product) return null;
 
@@ -58,6 +59,9 @@ const ProductDetailsCard = ({ product }) => {
       />
     ));
   };
+
+  const unitPrice = sellingPrice || price?.mrp || 0;
+  const totalPrice = unitPrice * quantity;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -123,16 +127,20 @@ const ProductDetailsCard = ({ product }) => {
             <div className="space-y-6">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
+                  {/* Category */}
                   <span className="inline-block px-4 py-1.5 bg-green-50 text-green-600 text-[0.65rem] font-black uppercase tracking-[0.2em] rounded-full">
                     {category}
                   </span>
+                  {/* SKU */}
                   <span className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest text-xs">
                     SKU: {stock?.sku}
                   </span>
                 </div>
+                {/* Title */}
                 <h1 className="text-4xl font-black text-slate-800 tracking-tight leading-tight">
                   {title}
                 </h1>
+                {/* Rating */}
                 <div className="flex items-center gap-4">
                   <div className="flex gap-1">
                     {renderStars(rating?.average)}
@@ -142,14 +150,14 @@ const ProductDetailsCard = ({ product }) => {
                   </span>
                 </div>
               </div>
-
+              {/* Price */}
               <div className="flex items-baseline gap-4">
                 <span className="text-4xl font-black text-green-600">
-                  ${sellingPrice || price?.mrp}
+                  ${totalPrice}
                 </span>
                 {price?.discount > 0 && (
                   <span className="text-xl font-bold text-slate-300 line-through">
-                    ${price.mrp}
+                    ${price.mrp * quantity}
                   </span>
                 )}
                 <span className="text-sm font-bold text-slate-400 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100 ml-auto">
@@ -177,7 +185,7 @@ const ProductDetailsCard = ({ product }) => {
                   <span>Fast Delivery within 24 Hours</span>
                 </div>
               </div>
-
+              {/* Tags */}
               <div className="flex flex-wrap gap-2 pt-4">
                 {tags?.map((tag) => (
                   <span
@@ -193,13 +201,21 @@ const ProductDetailsCard = ({ product }) => {
             <div className="mt-10 space-y-4">
               <div className="flex items-center md:flex-row flex-col gap-4">
                 <div className="flex items-center bg-slate-50 rounded-[2rem] p-1 border border-slate-100 shadow-inner">
-                  <button className="lg:w-12 w-10 h-8 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl">
+                  <button
+                    className="lg:w-12 w-10 h-8 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl cursor-pointer"
+                    disabled={quantity <= 1}
+                    onClick={() => setQuantity((prev) => prev - 1)}
+                  >
                     -
                   </button>
                   <span className="lg:w-12 w-10 text-center font-black text-slate-800">
-                    1
+                    {quantity}
                   </span>
-                  <button className="lg:w-12 w-10 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl">
+                  <button
+                    className="lg:w-12 w-10 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl cursor-pointer"
+                    disabled={quantity >= stock?.quantity}
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                  >
                     +
                   </button>
                 </div>
@@ -208,7 +224,7 @@ const ProductDetailsCard = ({ product }) => {
                 </div>
               </div>
               <p className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest text-center">
-                Only {stock?.quantity} left in stock
+                Only {stock?.quantity - quantity} left in stock
               </p>
             </div>
           </div>

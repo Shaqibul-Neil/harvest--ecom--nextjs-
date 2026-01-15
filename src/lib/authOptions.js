@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { loginUser, saveOAuthUser } from "@/services/userServices";
 import { dbConnect } from "./dbConnect";
+import { collections } from "./constants";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -10,12 +11,12 @@ export const authOptions = {
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "jsmith@gmail.com",
-        },
-        password: { label: "Password", type: "password" },
+        // email: {
+        //   label: "Email",
+        //   type: "email",
+        //   placeholder: "jsmith@gmail.com",
+        // },
+        // password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         const user = await loginUser(credentials);
@@ -46,20 +47,24 @@ export const authOptions = {
       //never take values from user for security purposes
 
       if (token) {
-        session.role = token.role;
-        session.name = token.name;
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.role = token.role;
       }
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
         // to get the latest data from database
-        const dbUser = await dbConnect("users").findOne({
+        const dbUser = await dbConnect(collections.USERS).findOne({
           email: user.email.toLowerCase(),
         });
-        console.log("token", token, "dbUser", dbUser);
+        //console.log("account data token", account);
+        token.id = dbUser?._id.toString();
         token.email = dbUser?.email || user.email;
-        token.name = user.name || `${user.firstName} ${user.lastName}`;
+        token.name =
+          dbUser?.name || user.name || `${user.firstName} ${user.lastName}`;
         token.role = dbUser?.role || "user";
         //add image later
       }

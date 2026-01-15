@@ -1,12 +1,13 @@
+import { collections } from "@/lib/constants";
 import { dbConnect } from "@/lib/dbConnect";
-import { ObjectId } from "mongodb";
+const productsCollection = () => dbConnect(collections.PRODUCTS);
 
 // --------------------PUBLIC API------------------------
 //Find Featured Products
 export const findFeaturedProducts = async (query = {}, options = {}) => {
   const { limit, projection } = options;
 
-  return await dbConnect("products")
+  return await productsCollection()
     .find(query, { projection })
     .limit(limit)
     .toArray();
@@ -15,10 +16,10 @@ export const findFeaturedProducts = async (query = {}, options = {}) => {
 //Find All Products
 export const findAllProducts = async (options = {}) => {
   const { projection } = options;
-  return await dbConnect("products").find({}, { projection }).toArray();
+  return await productsCollection().find({}, { projection }).toArray();
 };
 
 //Find A Single Product
 export const findSingleProduct = async (query) => {
-  return await dbConnect("products").findOne(query);
+  return await productsCollection().findOne(query);
 };

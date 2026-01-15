@@ -8,23 +8,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import placeholder from "@/assets/placeholder.webp";
 
 import React from "react";
 import Link from "next/link";
 
-const NavbarDropdown = () => {
-  const session = useSession();
-  //   console.log(session);
+const NavbarDropdown = ({session}) => {
   return (
     <div className="flex items-center">
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none focus:ring-0">
           <div className="relative group">
             <Image
-              src={session?.data?.user?.image || placeholder}
+              src={session?.user?.image || placeholder}
               loading="eager"
               alt="User"
               width={100}
@@ -39,8 +36,8 @@ const NavbarDropdown = () => {
           className="w-56 p-2 rounded-[1.5rem] border-slate-100 shadow-2xl mt-2 animate-in fade-in slide-in-from-top-2 duration-300"
         >
           <div className="px-4 py-3 border-b border-slate-50 mb-2">
-            <DropdownMenuLabel className="p-0 font-black text-slate-800 text-sm">{session?.data?.user?.name || "User"}</DropdownMenuLabel>
-            <p className="text-[0.6rem] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{session?.data?.user?.email}</p>
+            <DropdownMenuLabel className="p-0 font-black text-slate-800 text-sm">{session?.user?.name || "User"}</DropdownMenuLabel>
+            <p className="text-[0.6rem] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{session?.user?.email}</p>
           </div>
           
           <DropdownMenuItem className="rounded-xl focus:bg-slate-50 p-0 overflow-hidden">

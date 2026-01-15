@@ -6,17 +6,14 @@ import {
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Crop, Menu, ShoppingCart, X } from "lucide-react";
-import { useSession } from "next-auth/react";
 import NavbarDropdown from "./NavbarDropdown";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-export default function MainHeader() {
+export default function MainHeader({session}) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const session = useSession();
   const path = usePathname();
   //console.log(session);
   const navLinks = [
@@ -115,8 +112,8 @@ export default function MainHeader() {
               0
             </span>
           </button>
-          {session.status === "authenticated" ? (
-            <NavbarDropdown />
+          { session ? (
+            <NavbarDropdown session={session}/>
           ) : (
             <Link
               href="/login"

@@ -61,10 +61,17 @@ const LoginForm = () => {
       loading: "Logging you in...",
       success: () => {
         //re-route user to his desired path
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
         router.push(callbackUrl);
         return <span className="font-semibold">Logged in successfully</span>;
       },
-      error: (err) => <span className="font-semibold">{err.message}</span>,
+      error: (err) => (
+        <span className="font-semibold">
+          Invalid email or password. Try Google Login or Register
+        </span>
+      ),
     });
 
     //console.log(res);
@@ -78,8 +85,12 @@ const LoginForm = () => {
   return (
     <div className="space-y-10 bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-2xl shadow-slate-100">
       <div className="space-y-3">
-         <h1 className="text-3xl font-black text-slate-800 tracking-tight">Welcome Back</h1>
-         <p className="text-slate-400 font-bold text-sm">Please enter your credentials to access your account</p>
+        <h1 className="text-3xl font-black text-slate-800 tracking-tight">
+          Welcome Back
+        </h1>
+        <p className="text-slate-400 font-bold text-sm">
+          Please enter your credentials to access your account
+        </p>
       </div>
 
       {/* Login Form */}
@@ -92,7 +103,9 @@ const LoginForm = () => {
             autoComplete="off"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Email Address</FormLabel>
+                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Email Address
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -113,7 +126,9 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">Password</FormLabel>
+                <FormLabel className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-slate-400">
+                  Password
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -129,7 +144,10 @@ const LoginForm = () => {
           />
 
           <div className="flex justify-between items-center gap-6 pt-2">
-            <Link href={"/register"} className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors">
+            <Link
+              href={`/register?callbackUrl=${callbackUrl}`}
+              className="text-green-600 font-black text-xs uppercase tracking-widest hover:text-green-700 transition-colors"
+            >
               Create Account?
             </Link>
 
@@ -143,7 +161,7 @@ const LoginForm = () => {
           </div>
         </form>
       </Form>
-      
+
       {/* Divider */}
       <div className="relative py-4">
         <div className="absolute inset-0 flex items-center">

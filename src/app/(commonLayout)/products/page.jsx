@@ -11,7 +11,9 @@ export const metadata = {
   description: "An E-commerce app for fresh vegetables and fruits",
 };
 
+//const delay = (ms)=> new Promise(resolve=>setTimeout(resolve, ms));
 const Products = async () => {
+  //await delay(6000);
   //fetch data
   const { result } = await getAllProductsController();
   // console.log(result);

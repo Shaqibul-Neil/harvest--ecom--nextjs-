@@ -1,4 +1,4 @@
-import { createUser, findUserByEmail } from "@/repositories/userRepository";
+import { createUser, findUserByEmail, updateUserLastLogin } from "@/repositories/userRepository";
 import { userRegisterSchema } from "@/schemas/userSchema";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -43,6 +43,7 @@ export const registerUser = async (payload) => {
     ...validation.data,
     email: validation.data.email.toLowerCase().trim(),
     createdAt: new Date().toISOString(),
+    lastLoginAt:new Date().toISOString(),
     role: "user",
     password: encryptedPassword,
   };
@@ -66,11 +67,14 @@ export const saveOAuthUser = async (user, account) => {
     providerId: account.providerAccountId,
     role: "user",
     createdAt: new Date().toISOString(),
+    lastLoginAt:new Date().toISOString(),
   };
   if (!user.email) return false;
   const isExist = await findUserByEmail(user.email.toLowerCase().trim());
   if (!isExist) {
     await createUser(payload);
+  } else{
+    await updateUserLastLogin(user.email.toLowerCase().trim());
   }
   return true;
 };
@@ -83,6 +87,9 @@ export const loginUser = async (payload) => {
   if (!user) return null;
   //match password
   const isPasswordOk = await bcrypt.compare(password, user.password);
-  if (isPasswordOk) return user;
+  if (isPasswordOk) {
+    await updateUserLastLogin(user.email.toLowerCase().trim())
+    return user
+  }
   else return null;
 };

@@ -1,9 +1,10 @@
 import "./globals.css";
-import MainHeader from "@/components/shared/header/MainHeader";
 import Provider from "@/provider/Provider";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/shared/footer/Footer";
 import localFont from "next/font/local";
+import Navbar from "@/components/shared/header/Navbar";
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = localFont({
   src: [
@@ -45,8 +46,20 @@ export default function RootLayout({ children }) {
     <Provider>
       <html lang="en">
         <body className={`${poppins.className} antialiased`}>
+          {/* Top Loader */}
+          <NextTopLoader
+            color="#16a34a"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={200}
+            shadow="0 0 10px #16a34a,0 0 5px #16a34a"
+          />
           {/* Header */}
-          <MainHeader />
+          <Navbar />
           {/* content */}
           <main className="min-h-screen">{children}</main>
           {/* Footer */}
