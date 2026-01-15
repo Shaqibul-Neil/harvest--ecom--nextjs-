@@ -6,6 +6,11 @@ import { getAllProductsController } from "@/controllers/productsController";
 import { Search } from "lucide-react";
 import React from "react";
 
+export const metadata = {
+  title: "All Products",
+  description: "An E-commerce app for fresh vegetables and fruits",
+};
+
 const Products = async () => {
   //fetch data
   const { result } = await getAllProductsController();

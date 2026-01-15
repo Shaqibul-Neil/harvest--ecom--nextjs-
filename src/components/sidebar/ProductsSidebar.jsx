@@ -51,7 +51,7 @@ const ProductsSidebar = () => {
             </div>
           </div>
 
-          <div className="h-px bg-gradient-to-r from-transparent via-slate-100 to-transparent"></div>
+          <div className="h-px bg-linear-to-r from-transparent via-slate-100 to-transparent"></div>
 
           {/* 2. Price Range Filter */}
           <div>
@@ -88,7 +88,7 @@ const ProductsSidebar = () => {
             </div>
           </div>
 
-          <div className="h-px bg-gradient-to-r from-transparent via-slate-100 to-transparent"></div>
+          <div className="h-px bg-linear-to-r from-transparent via-slate-100 to-transparent"></div>
         </div>
 
         {/* Action Button */}

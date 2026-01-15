@@ -177,3 +177,102 @@
     transform: translateY(-0.1em);
   }
 }
+
+/* Custom Loading Animations */
+@keyframes harvest-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes harvest-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: blur(2px);
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+@keyframes harvest-bounce {
+  0%,
+  100% {
+    transform: scale(1);
+    background-color: #16a34a;
+  }
+  50% {
+    transform: scale(1.5);
+    background-color: #bbf7d0;
+  }
+}
+
+@keyframes harvest-slide {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100px;
+  }
+}
+
+@keyframes harvest-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-harvest-spin {
+  animation: harvest-spin 2s linear infinite;
+}
+
+.animate-harvest-pulse {
+  animation: harvest-pulse 2s ease-in-out infinite;
+}
+
+.animate-harvest-bounce {
+  animation: harvest-bounce 1s ease-in-out infinite;
+}
+
+.animate-harvest-slide {
+  animation: harvest-slide 1s ease-out forwards;
+}
+
+@keyframes harvest-orb-float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-30px) scale(1.2); opacity: 0.6; }
+}
+
+@keyframes harvest-scale-up {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes harvest-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.animate-harvest-scale-up {
+  animation: harvest-scale-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-harvest-spin-slow {
+  animation: harvest-spin-slow 25s linear infinite;
+}
+
+.animate-harvest-orb-float {
+  animation: harvest-orb-float 4s ease-in-out infinite;
+}

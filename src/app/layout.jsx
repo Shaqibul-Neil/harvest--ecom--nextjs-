@@ -23,6 +23,11 @@ const poppins = localFont({
       style: "normal",
     },
     {
+      path: "./../fonts/Poppins-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
       path: "./../fonts/Poppins-Black.ttf",
       weight: "900",
       style: "normal",
@@ -31,7 +36,7 @@ const poppins = localFont({
 });
 
 export const metadata = {
-  title: "Harvest",
+  title: { default: "Harvest", template: "%s | Harvest" },
   description: "An E-commerce app for fresh vegetables and fruits",
 };
 

@@ -1,7 +1,9 @@
-import React from "react";
-
+export const metadata = {
+  title: "About Us",
+  description: "An E-commerce app for fresh vegetables and fruits",
+};
 const About = () => {
-  return <div>About</div>;
+  return <p>About us</p>;
 };
 
 export default About;

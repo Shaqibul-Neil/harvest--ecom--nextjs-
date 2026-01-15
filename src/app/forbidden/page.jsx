@@ -1,4 +1,3 @@
-// ForbiddenPage.jsx
 "use client";
 
 import Link from "next/link";
@@ -6,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function Forbidden() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex items-center justify-center px-6 py-12 overflow-hidden relative">
+    <div className="min-h-screen bg-linear-to-br from-red-50 via-white to-red-50 flex items-center justify-center px-6 py-12 overflow-hidden relative">
       {/* Background Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-red-200/30 rounded-full blur-3xl" />
@@ -30,7 +29,7 @@ export default function Forbidden() {
               className="absolute inset-0 rounded-full border-4 border-dashed border-red-200"
             />
             {/* Inner Circle with Lock */}
-            <div className="absolute inset-5 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-2xl shadow-red-500/40 border-4 border-white/20">
+            <div className="absolute inset-5 bg-linear-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-2xl shadow-red-500/40 border-4 border-white/20">
               <svg
                 className="w-14 h-14 text-white"
                 fill="none"
@@ -71,7 +70,7 @@ export default function Forbidden() {
           className="text-5xl md:text-6xl font-black text-slate-800 mb-6 tracking-tight"
         >
           Access{" "}
-          <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
             Forbidden
           </span>
         </motion.h1>
