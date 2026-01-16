@@ -9,12 +9,19 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     const session = await getServerSession(authOptions);
-    //if user is not logged in return the empty cart
-    if (!session) return Response.json({ success: true, cartItems: [] });
-    //if logged in find the cart from the database
+    // If not logged in, return empty cart
+    if (!session) {
+      return Response.json({ success: true, cartItems: [] });
+    }
+
+    // If logged in, find the cart from database
     const cart = await findCartByOwner(session.user.id);
-    //if no cart found return [] or return items
-    return Response.json({ success: true, cartItems: cart?.items || [] });
+
+    // Return items if cart exists, otherwise empty array
+    return Response.json({
+      success: true,
+      cartItems: cart?.items || [],
+    });
   } catch (error) {
     console.error("Get Cart Error:", error);
     return Response.json(

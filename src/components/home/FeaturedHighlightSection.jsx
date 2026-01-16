@@ -11,15 +11,13 @@ const FeaturedHighlightSection = () => {
   return (
     <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
       {/* Left Content Side */}
-      <div className="flex-1 space-y-8 text-center lg:text-left">
-        <div className="lg:space-y-4 md:space-y-2 space-y-1">
+      <div className="flex-1 space-y-8 text-center lg:text-left lg:order-1 order-2">
+        <div className="lg:space-y-8 space-y-6">
           <SubHeadings className={"justify-center lg:justify-start"}>
             Freshness Daily
           </SubHeadings>
 
-          <MainHeadings highlight="Organic Harvest" text="for Home">
-            Premium
-          </MainHeadings>
+          <MainHeadings highlight="Garden Harvest">Wholesome</MainHeadings>
         </div>
 
         <p className="text-slate-500 text-sm md:text-base font-medium max-w-md mx-auto lg:mx-0 leading-relaxed">
@@ -34,7 +32,7 @@ const FeaturedHighlightSection = () => {
       </div>
 
       {/* Right Image Side */}
-      <div className="flex-1 relative w-full aspect-4/3 lg:aspect-auto lg:h-155">
+      <div className="flex-1 relative lg:w-full md:w-2/3 w-full aspect-square lg:aspect-auto lg:h-[400px] md:h-96 lg:order-2 order-1">
         {/* Main Image */}
         <div className="relative w-full h-full rounded-[3rem] overflow-hidden shadow-2xl shadow-slate-200/50">
           <Image
@@ -48,8 +46,8 @@ const FeaturedHighlightSection = () => {
         </div>
 
         {/* Overlapping Produce Image - No extra animation as per rules */}
-        <div className="absolute -bottom-12 -left-12 md:-left-12 lg:-left-28 w-36 md:w-64 lg:w-80 aspect-square bg-white rounded-full p-3 z-20">
-          <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white">
+        <div className="absolute -bottom-10 -left-12 md:-left-12 lg:-left-28 w-28 md:w-56 aspect-square bg-white rounded-full p-3 z-20">
+          <div className="relative w-full h-full rounded-full overflow-hidden md:border-4 border-3 border-white">
             <Image
               src="https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?q=80&w=2000&auto=format&fit=crop"
               alt="Fresh Organic Produce"

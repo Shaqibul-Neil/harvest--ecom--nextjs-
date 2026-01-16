@@ -57,7 +57,7 @@ const RecentPosts = () => {
   return (
     <section className="space-y-16 overflow-x-clip">
       {/* Header */}
-      <div className="lg:space-y-4 md:space-y-2 space-y-1">
+      <div className="lg:space-y-8 space-y-6">
         <SubHeadings>Tips & Tricks</SubHeadings>
         <div className="flex lg:justify-between lg:items-end lg:flex-row flex-col gap-6">
           <MainHeadings highlight="Posts">Our Recent </MainHeadings>

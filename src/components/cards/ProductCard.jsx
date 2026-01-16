@@ -1,26 +1,10 @@
-"use client";
-
 import Image from "next/image";
-import { Eye, GitCompare, Heart, Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Star } from "lucide-react";
 import AddToCartButton from "../shared/button/AddToCartButton";
-import IconButton from "../shared/button/IconButton";
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import ProductCardActions from "./ProductCardActions";
+import { cn } from "@/lib/utils";
 
 const ProductCard = ({ product }) => {
-  const [hoverState, setHoverState] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const router = useRouter();
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
   // Destructure product data
   const { _id, category, mainImage, price, rating, unit, title, sellingPrice } =
     product || {};
@@ -44,8 +28,8 @@ const ProductCard = ({ product }) => {
   return (
     <div
       className="group relative bg-white rounded-[2.5rem] border border-slate-100 p-4 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(22,163,74,0.12)] hover:-translate-y-2"
-      onMouseEnter={() => setHoverState(true)}
-      onMouseLeave={() => setHoverState(false)}
+      // onMouseEnter={() => setHoverState(true)}
+      // onMouseLeave={() => setHoverState(false)}
     >
       {/* Product Image */}
 
@@ -58,35 +42,22 @@ const ProductCard = ({ product }) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-700 group-hover:scale-110 h-64"
         />
-        {/* Hover Buttons with Framer Motion */}
+        {/* 
+          Hover Buttons - CSS Based
+          - Desktop: opacity-0 -> group-hover:opacity-100 (hidden by default, show on hover)
+          - Mobile (md and below): opacity-100 (always visible)
+        */}
 
-        <AnimatePresence>
-          {(hoverState || isMobile) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-3 absolute bottom-2 left-1/2 -translate-x-1/2"
-            >
-              {/* Wishlist */}
-              <IconButton icon={Heart} />
-
-              {/* Quick View */}
-              <IconButton
-                icon={Eye}
-                onClick={() => router.push(`/products/${_id}`)}
-              />
-
-              {/* Compare */}
-              <IconButton icon={GitCompare} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <ProductCardActions
+          productId={_id}
+          className="opacity-100 lg:opacity-0 md:translate-y-4 
+             md:group-hover:opacity-100 md:group-hover:translate-y-0 
+             transition-all duration-300"
+        />
       </div>
 
       {/* Content Area */}
-      <div className="space-y-3 p-6">
+      <div className="space-y-3 xl:p-6 p-4">
         <div className="space-y-2">
           {/* Category & Rating Row */}
           <div className="flex items-center justify-between">

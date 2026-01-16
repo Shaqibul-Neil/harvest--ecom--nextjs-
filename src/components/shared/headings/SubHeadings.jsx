@@ -1,13 +1,12 @@
 import React from "react";
-import { MdOutlineStart } from "react-icons/md";
 
-const SubHeadings = ({ children, className }) => {
+const SubHeadings = ({ children, className, style }) => {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <div className="w-6 h-px bg-green-500 rounded-full" />
-      <h4 className="text-green-600 font-black text-xs uppercase tracking-[0.25em]">
+    <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-full px-4 py-2 shadow-lg shadow-green-100/50">
+      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+      <span className="md:text-[0.7rem] text-[10px] font-bold text-green-700 uppercase tracking-[0.2em]">
         {children}
-      </h4>
+      </span>
     </div>
   );
 };

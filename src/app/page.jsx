@@ -15,23 +15,23 @@ export default async function Home() {
 
   return (
     <div>
-      <p>Server : {JSON.stringify(session)}</p>
+      {/* <p>Server : {JSON.stringify(session)}</p> */}
       {/* <p>{session.user.role}</p> */}
-      <Test />
+      {/* <Test /> */}
       <section>
         <Banner />
       </section>
-      <section className="max-w-[1440px] w-11/12 mx-auto px-5 mb-10">
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 mb-8">
         <FeaturedProducts />
       </section>
-      <section className="bg-green-100 py-8 md:mb-10 mb-8">
+      <section className="bg-green-50/50 py-8 md:mb-10 mb-8">
         <WhyChooseUs />
       </section>
-      <section className="lg:mb-20 md:mb-16 mb-8">
-        <SeasonalPromoSection />
-      </section>
-      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:mb-20 md:mb-16 mb-12">
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:my-24 md:my-32 my-20">
         <FeaturedHighlightSection />
+      </section>
+      <section className="lg:mt-32 md:my-16 my-8">
+        <SeasonalPromoSection />
       </section>
       <section className="lg:mb-20 md:mb-12 mb-8">
         <SustainabilitySection />

@@ -94,7 +94,7 @@ export const CartProvider = ({ children }) => {
         if (isSyncingRef.current) return;
         isSyncingRef.current = true;
         try {
-          const response = await fetch("/api/cart/get");
+          const response = await fetch("/api/cart");
           const data = await response.json();
           if (data.success && data.cartItems?.length > 0) {
             hasSyncedRef.current = true; // data fetch completed do not need to fetch again

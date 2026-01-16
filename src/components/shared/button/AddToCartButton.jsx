@@ -14,7 +14,7 @@ const AddToCartButton = ({ product, quantity = 1, className }) => {
     <button
       onClick={addCartToLS}
       disabled={loading}
-      className={`addCart flex justify-center h-11 w-full items-center gap-2 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`addCart flex justify-center h-11 w-full items-center gap-2 bg-white text-green-700 border-green-700 border font-bold rounded-2xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
       <div className="svg-wrapper">
         <svg
