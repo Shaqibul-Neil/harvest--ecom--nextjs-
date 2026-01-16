@@ -126,16 +126,6 @@ const SeasonalPromoSection = () => {
             </div>
           ))}
         </div>
-
-        {/* Bottom CTA for Mobile */}
-        <div className="mt-12 md:hidden">
-          <Link
-            href="/products"
-            className="flex items-center justify-center gap-2 bg-green-50 text-green-700 font-bold py-4 rounded-2xl"
-          >
-            Shop All Seasonal <ArrowRight size={18} />
-          </Link>
-        </div>
       </div>
     </section>
   );
