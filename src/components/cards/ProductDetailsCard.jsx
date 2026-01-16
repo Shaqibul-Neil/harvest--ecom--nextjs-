@@ -286,7 +286,7 @@ const ProductDetailsCard = ({ product }) => {
                     {Object.entries(nutrition).map(([key, value]) => (
                       <div
                         key={key}
-                        className="bg-white md:p-4 p-2 rounded-2xl border border-slate-100 shadow-sm text-center"
+                        className="bg-white lg:p-4 p-2 rounded-2xl border border-slate-100 shadow-sm text-center"
                       >
                         <span className="block text-[0.6rem] font-black text-slate-400 tracking-wider mb-1 capitalize">
                           {key}
@@ -326,7 +326,7 @@ const ProductDetailsCard = ({ product }) => {
                 </ul>
               </div>
 
-              <div className="bg-white p-6 rounded-[2rem] border border-slate-100 space-y-6 shadow-sm">
+              <div className="bg-white lg:p-6 p-4 rounded-[2rem] border border-slate-100 space-y-6 shadow-sm">
                 <h4 className="font-black text-slate-800 uppercase tracking-widest text-xs border-b border-slate-200 pb-4">
                   Product Details
                 </h4>

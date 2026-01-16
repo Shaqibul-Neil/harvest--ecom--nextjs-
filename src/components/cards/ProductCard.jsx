@@ -49,14 +49,14 @@ const ProductCard = ({ product }) => {
     >
       {/* Product Image */}
 
-      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-green-50/50">
+      <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-green-50/50">
         <Image
           src={mainImage}
           alt={title || "Product Image"}
           fill
           loading="eager"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-700 group-hover:scale-110 h-64"
         />
         {/* Hover Buttons with Framer Motion */}
 

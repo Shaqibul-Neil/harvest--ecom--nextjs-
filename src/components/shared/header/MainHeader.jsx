@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -16,7 +16,7 @@ import { useCart } from "@/context/CartContext";
 export default function MainHeader({ session }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const path = usePathname();
-  const { cart } = useCart();
+  const { cart, mounted } = useCart();
   const cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
   //console.log(cart);
   //console.log(cartQuantity);
@@ -27,6 +27,10 @@ export default function MainHeader({ session }) {
     { title: "Products", href: "/products" },
     { title: "Contact", href: "/contact" },
   ];
+  if (!mounted) {
+    return null; // বা skeleton / empty header
+  }
+
   return (
     <header className="w-full border-b border-border py-4">
       <div className="mx-auto flex items-center justify-between w-11/12 max-w-[1440px]">
@@ -69,7 +73,7 @@ export default function MainHeader({ session }) {
               href={"/"}
               className="flex items-center gap-2 text-slate-800 group"
             >
-              <div className="w-10 h-10 bg-green-50 flex items-center justify-center rounded-2xl group-hover:bg-green-600 group-hover:text-white transition-all duration-500">
+              <div className="w-10 h-10 bg-green-200 md:flex items-center justify-center rounded-2xl group-hover:bg-green-600 group-hover:text-white transition-all duration-500 hidden">
                 <Crop className="w-6 h-6" />
               </div>
               <span className="font-black text-2xl tracking-tighter">
@@ -115,8 +119,8 @@ export default function MainHeader({ session }) {
             href={"/cart"}
             className="cursor-pointer text-slate-400 hover:text-green-600 transition-colors relative"
           >
-            <ShoppingCart className="w-7 h-7" />
-            <span className="absolute -top-2 -right-2 bg-green-500 text-slate-800 text-xs font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white">
+            <ShoppingCart className="md:w-7 md:h-7 w-6 h-6" />
+            <span className="absolute -top-2 -right-2 bg-green-500 text-slate-800 md:text-xs text-[10px] font-black md:w-6 md:h-6 h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
               {cartQuantity}
             </span>
           </Link>

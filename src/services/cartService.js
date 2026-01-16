@@ -71,3 +71,37 @@ export const addToCartService = async (ownerInfo, productId, quantity) => {
 };
 
 //Merging the guest cart with the logged in user cart for same user
+export const syncCartService = async (ownerId, localItems) => {
+  //get the user's current cart from database
+  let cart = await findCartByOwner(ownerId);
+  //if no cart in database then create with the local cart info
+  if (!cart) {
+    return await createCart({
+      userId: ownerId,
+      items: localItems,
+      status: "active",
+      updatedAt: new Date().toISOString(),
+    });
+  }
+  //if cart exists then merge the cart
+  localItems.forEach((localItem) => {
+    //check if the same local item is in database with same id and same price
+    const dbItemIndex = cart.items.findIndex(
+      (dbItem) =>
+        dbItem.productId.toString() === localItem.productId &&
+        dbItem.price === localItem.price
+    );
+    if (dbItemIndex > -1) {
+      //if there is similar product then just increase the quantity
+      cart.items[dbItemIndex].quantity += localItem.quantity;
+    } else {
+      //if the product is different or same product with different price
+      cart.items.push(localItem);
+    }
+  });
+  //update the cart and save database
+  return updateCart(cart._id, {
+    items: cart.items,
+    updatedAt: new Date().toISOString(),
+  });
+};

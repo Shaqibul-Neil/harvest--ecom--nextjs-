@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -10,7 +11,10 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   // Prevent double execution (button spam / strict mode safety)
   const isAddingRef = useRef(false);
-
+  //avoid server/client branching during render meaning when initially server loads the cart value is 0 but the local storage cart value could be different
+  const [mounted, setMounted] = useState(false);
+  //check if the user is logged in or not
+  const { data: session, status } = useSession();
   /* -------- INITIAL STATE FROM LOCAL STORAGE -------- */
   const [cart, setCart] = useState(() => {
     if (typeof window === "undefined") return [];
@@ -26,6 +30,36 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("harvest_cart", JSON.stringify(cart));
   }, [cart]);
+
+  /* -------- SYNC ON LOGIN -------- */
+  useEffect(() => {
+    const syncWithDB = async () => {
+      if (status === "authenticated" && session?.user) {
+        try {
+          //send the local storage carts to the server
+          const response = await fetch("/api/cart/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ localItems: cart }),
+          });
+          console.log("response", response);
+          const data = await response.json();
+          console.log("data", data);
+          if (data.success && data.cartItems) {
+            setCart(data.cartItems);
+            console.log("cart synced with server", cart);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    syncWithDB();
+  }, [status, session]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   /* -------- ADD TO CART FUNCTION -------- */
   const addToStorage = (product, quantity = 1) => {
@@ -87,6 +121,7 @@ export const CartProvider = ({ children }) => {
   const value = {
     cart,
     addToStorage,
+    mounted,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
@@ -100,3 +135,13 @@ export const useCart = () => {
   }
   return context;
 };
+
+/**isSyncing সেফগার্ডের প্রয়োজনীয়তা এবং এটি কোথায় ও কীভাবে ব্যবহার করবেন, তার বিস্তারিত ব্যাখ্যা নিচে দেওয়া হলো:
+
+১. কেন এটি প্রয়োজন? (The "Why")
+NextAuth যখন লগইন স্ট্যাটাস চেক করে, তখন status ভেরিয়েবলটি কয়েকবার পরিবর্তিত হতে পারে (যেমন: loading -> authenticated)। এর ফলে আপনার useEffect একাধিকবার ট্রিগার হতে পারে। যদি একই সাথে আপনার /api/cart/sync এপিআই-তে ৩-৪টি রিকোয়েস্ট চলে যায়, তবে ডাটাবেজে ডুপ্লিকেট ডাটা তৈরি হওয়া বা রেস কন্ডিশন (Race Condition) হওয়ার সম্ভাবনা থাকে। isSyncing সেফগার্ড নিশ্চিত করে যে, একটি সিঙ্ক প্রসেস চলাকালীন অন্য কোনো নতুন সিঙ্ক শুরু হবে না।
+
+২. কোথায় ব্যবহার করবেন? (The "Where")
+এটি আপনার 
+CartContext.jsx
+ ফাইলের "SYNC ON LOGIN" useEffect-এর ভেতরে ব্যবহার করা উচিত। যেহেতু এটি শুধুমাত্র এপিআই কল ব্লক করার জন্য, তাই এখানে একটি useRef ব্যবহার করা সবচেয়ে ভালো (ঠিক আপনার isAddingRef এর মতো), কারণ এর ফলে অপ্রয়োজনীয় রি-রেন্ডার হবে না। */

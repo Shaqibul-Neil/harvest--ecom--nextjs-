@@ -7,6 +7,7 @@ const AddToCartButton = ({ product, quantity = 1, className }) => {
   const { addToStorage } = useCart();
   const addCartToLS = () => {
     addToStorage(product, quantity);
+    setLoading(false);
   };
 
   return (
