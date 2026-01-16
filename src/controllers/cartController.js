@@ -2,7 +2,6 @@ import { authOptions } from "@/lib/authOptions";
 import { getGuestId } from "@/lib/guestSession";
 import { addToCartService } from "@/services/cartService";
 import { getServerSession } from "next-auth";
-import { success } from "zod";
 
 export const handleAddToCart = async (req) => {
   try {

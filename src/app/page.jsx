@@ -1,6 +1,10 @@
 import Banner from "@/components/home/Banner";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import Test from "@/components/home/Test";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import FeaturedHighlightSection from "@/components/home/FeaturedHighlightSection";
+import RecentPosts from "@/components/home/RecentPosts";
+import Newsletter from "@/components/home/Newsletter";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 
@@ -15,8 +19,22 @@ export default async function Home() {
       <section>
         <Banner />
       </section>
-      <section className="max-w-[1440px] w-11/12 mx-auto">
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5">
         <FeaturedProducts />
+      </section>
+      <section className="bg-green-100 py-8 md:mb-24 mb-16">
+        <WhyChooseUs />
+      </section>
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:pb-20 md:pb-16 pb-10">
+        <FeaturedHighlightSection />
+      </section>
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:pb-20 md:pb-10 pb-4">
+        {" "}
+        <RecentPosts />
+      </section>
+      <section>
+        {" "}
+        <Newsletter />
       </section>
     </div>
   );

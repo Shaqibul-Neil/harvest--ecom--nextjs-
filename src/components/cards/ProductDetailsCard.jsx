@@ -220,7 +220,11 @@ const ProductDetailsCard = ({ product }) => {
                   </button>
                 </div>
                 <div className="flex-1">
-                  <AddToCartButton className="h-14 rounded-2xl shadow-xl shadow-green-200" />
+                  <AddToCartButton
+                    product={product}
+                    quantity={quantity}
+                    className="h-14 rounded-2xl shadow-xl shadow-green-200"
+                  />
                 </div>
               </div>
               <p className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest text-center">
