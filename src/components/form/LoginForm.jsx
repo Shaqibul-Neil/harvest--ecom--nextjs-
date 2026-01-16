@@ -61,9 +61,11 @@ const LoginForm = () => {
       loading: "Logging you in...",
       success: () => {
         //re-route user to his desired path
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+         setTimeout(() => {
+        //   window.location.reload();
+        router.refresh();
+         }, 500);
+        
         router.push(callbackUrl);
         return <span className="font-semibold">Logged in successfully</span>;
       },

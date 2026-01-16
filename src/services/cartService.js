@@ -76,12 +76,13 @@ export const syncCartService = async (ownerId, localItems) => {
   let cart = await findCartByOwner(ownerId);
   //if no cart in database then create with the local cart info
   if (!cart) {
-    return await createCart({
+    const result = await createCart({
       userId: ownerId,
       items: localItems,
       status: "active",
       updatedAt: new Date().toISOString(),
     });
+    return await findCartByOwner(ownerId);
   }
   //if cart exists then merge the cart
   localItems.forEach((localItem) => {
@@ -99,9 +100,11 @@ export const syncCartService = async (ownerId, localItems) => {
       cart.items.push(localItem);
     }
   });
-  //update the cart and save database
-  return updateCart(cart._id, {
+  //update the  database
+  await updateCart(cart._id, {
     items: cart.items,
     updatedAt: new Date().toISOString(),
   });
+  //return the updated cart to get the items array in frontend
+  return await findCartByOwner(ownerId);
 };

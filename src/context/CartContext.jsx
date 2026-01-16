@@ -11,10 +11,17 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   // Prevent double execution (button spam / strict mode safety)
   const isAddingRef = useRef(false);
-  //avoid server/client branching during render meaning when initially server loads the cart value is 0 but the local storage cart value could be different
+  // To prevent multiple data fetch when user tries login logout too fast too many times and to prevent RACE CONDITION.
+  const isSyncingRef = useRef(false);
+  // FLAG: Once synced, never sync again in this session (prevents infinite loop)
+  const hasSyncedRef = useRef(false);
+  // FLAG: Skip localStorage write when data comes from server
+  const isFromServerRef = useRef(false);
+  // Avoid server/client branching during render
   const [mounted, setMounted] = useState(false);
-  //check if the user is logged in or not
+  // Check if the user is logged in or not
   const { data: session, status } = useSession();
+
   /* -------- INITIAL STATE FROM LOCAL STORAGE -------- */
   const [cart, setCart] = useState(() => {
     if (typeof window === "undefined") return [];
@@ -28,32 +35,80 @@ export const CartProvider = ({ children }) => {
 
   /* -------- SYNC CART TO LOCAL STORAGE -------- */
   useEffect(() => {
+    // Skip writing to localStorage if data just came from server (prevents loop)
+    if (isFromServerRef.current) {
+      isFromServerRef.current = false;
+      return;
+    }
     localStorage.setItem("harvest_cart", JSON.stringify(cart));
   }, [cart]);
 
   /* -------- SYNC ON LOGIN -------- */
   useEffect(() => {
     const syncWithDB = async () => {
-      if (status === "authenticated" && session?.user) {
+      // If already synced in this session, do nothing
+      if (hasSyncedRef.current) return;
+
+      const localCartData = localStorage.getItem("harvest_cart");
+      const parsedLocalCart = localCartData ? JSON.parse(localCartData) : [];
+      //case 1: logged in + data in local = merge
+      if (
+        status === "authenticated" &&
+        session?.user &&
+        parsedLocalCart.length > 0
+      ) {
+        if (isSyncingRef.current) return;
+        isSyncingRef.current = true;
+
         try {
-          //send the local storage carts to the server
           const response = await fetch("/api/cart/sync", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ localItems: cart }),
+            body: JSON.stringify({ localItems: parsedLocalCart }),
           });
-          console.log("response", response);
+
           const data = await response.json();
-          console.log("data", data);
+
           if (data.success && data.cartItems) {
+            // Mark as synced so it won't sync again
+            hasSyncedRef.current = true;
+            // Clear localStorage FIRST
+            localStorage.removeItem("harvest_cart");
+            // Set flag to skip the localStorage write in useEffect
+            isFromServerRef.current = true;
+            // Update state with server data
             setCart(data.cartItems);
-            console.log("cart synced with server", cart);
           }
         } catch (error) {
-          console.log(error);
+          console.error("Sync Error:", error);
+        } finally {
+          isSyncingRef.current = false;
+        }
+      }
+      //case 2 : logged in + local empty = fetch from database
+      else if (
+        status === "authenticated" &&
+        session?.user &&
+        parsedLocalCart.length === 0
+      ) {
+        if (isSyncingRef.current) return;
+        isSyncingRef.current = true;
+        try {
+          const response = await fetch("/api/cart/get");
+          const data = await response.json();
+          if (data.success && data.cartItems?.length > 0) {
+            hasSyncedRef.current = true; // data fetch completed do not need to fetch again
+            isFromServerRef.current = true;
+            setCart(data.cartItems);
+          }
+        } catch (error) {
+          console.error("Fetch Cart Error:", error);
+        } finally {
+          isSyncingRef.current = false;
         }
       }
     };
+
     syncWithDB();
   }, [status, session]);
 
