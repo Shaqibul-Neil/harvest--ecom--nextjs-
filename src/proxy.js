@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 //user private routes
 const privateRoutes = ["/dashboard"];
 //admin routes
-const adminRoutes = ["/dashboard/add-products"];
+const adminRoutes = ["/admin/add-products"];
 //seller routes
 // This function can be marked `async` if using `await` inside
 export async function proxy(req) {
@@ -43,5 +43,5 @@ export async function proxy(req) {
 // export default function proxy(request) { ... }
 
 export const config = {
-  matcher: "/dashboard/:path*",
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
 };

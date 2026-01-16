@@ -7,6 +7,7 @@ import RecentPosts from "@/components/home/RecentPosts";
 import Newsletter from "@/components/home/Newsletter";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
+import SeasonalPromoSection from "@/components/home/SeasonalPromoSection";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -24,6 +25,9 @@ export default async function Home() {
       </section>
       <section className="bg-green-100 py-8 md:mb-24 mb-16">
         <WhyChooseUs />
+      </section>
+      <section className=" py-8 md:mb-24 mb-16">
+        <SeasonalPromoSection />
       </section>
       <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:pb-20 md:pb-16 pb-10">
         <FeaturedHighlightSection />

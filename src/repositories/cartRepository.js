@@ -24,3 +24,12 @@ export const createCart = async (cartData) => {
 export const deleteCart = async (cartId) => {
   return await cartCollection().deleteOne({ _id: cartId });
 };
+
+//Get all cart
+export const getCart = async (ownerId) => {
+  return await cartCollection()
+    .find({
+      $or: [{ userId: ownerId }, { guestId: ownerId }],
+    })
+    .toArray();
+};

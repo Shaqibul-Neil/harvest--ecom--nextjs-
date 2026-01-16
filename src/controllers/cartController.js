@@ -9,6 +9,7 @@ export const handleAddToCart = async (req) => {
     //1. getting the user or guest id
     const session = await getServerSession(authOptions);
     const guestId = await getGuestId();
+     //console.log("Server side guestId check:", guestId); 
     //2.call the add to cart service with owner info
     const result = await addToCartService(
       { userId: session?.user?.id, guestId },

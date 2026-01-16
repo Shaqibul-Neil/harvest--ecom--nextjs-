@@ -10,7 +10,7 @@ export const getGuestId = async () => {
   //if no guest id then create one
   if (!guestId) {
     guestId = uuidv4();
-    console.log(guestId);
+    //console.log(guestId);
     //setting the cookies from server
     cookieStore.set("guestId", guestId, {
       httpOnly: true,
@@ -19,7 +19,7 @@ export const getGuestId = async () => {
       path: "/",
     });
   }
-  return guestId
+  return guestId;
 };
 /** Explanation
  * httpOnly: true---> this means client side js(browser) cant access this only server side can access this and only with server side request cookie can be read or updated. also it is the safe way to prevent XSS attack when cookies get stolen

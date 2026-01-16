@@ -11,10 +11,15 @@ import { Crop, Menu, ShoppingCart, X } from "lucide-react";
 import NavbarDropdown from "./NavbarDropdown";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
 
-export default function MainHeader({session}) {
+export default function MainHeader({ session }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const path = usePathname();
+  const { cart } = useCart();
+  const cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+  //console.log(cart);
+  //console.log(cartQuantity);
   //console.log(session);
   const navLinks = [
     { title: "Home", href: "/" },
@@ -106,14 +111,17 @@ export default function MainHeader({session}) {
         {/* Right: Login / Register */}
 
         <div className="flex gap-6 items-center">
-          <button className="cursor-pointer text-slate-400 hover:text-green-600 transition-colors relative">
-            <ShoppingCart className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-[0.6rem] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
-              0
+          <Link
+            href={"/cart"}
+            className="cursor-pointer text-slate-400 hover:text-green-600 transition-colors relative"
+          >
+            <ShoppingCart className="w-7 h-7" />
+            <span className="absolute -top-2 -right-2 bg-green-500 text-slate-800 text-xs font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-white">
+              {cartQuantity}
             </span>
-          </button>
-          { session ? (
-            <NavbarDropdown session={session}/>
+          </Link>
+          {session ? (
+            <NavbarDropdown session={session} />
           ) : (
             <Link
               href="/login"

@@ -43,22 +43,21 @@ const ProductCard = ({ product }) => {
 
   return (
     <div
-      className="relative rounded-[2rem] shadow-xl shadow-slate-200/50 bg-white border border-slate-50 transition-all duration-500 hover:shadow-2xl hover:shadow-green-100/50 hover:border-green-100 w-full group overflow-hidden"
+      className="group relative bg-white rounded-[2.5rem] border border-slate-100 p-4 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(22,163,74,0.12)] hover:-translate-y-2"
       onMouseEnter={() => setHoverState(true)}
       onMouseLeave={() => setHoverState(false)}
     >
       {/* Product Image */}
-      <div className="relative">
-        <div className="relative flex h-52 w-full items-center justify-center bg-white overflow-hidden p-6">
-          <Image
-            src={mainImage}
-            alt={title || "Product Image"}
-            fill
-            loading="eager"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain p-4 transition-transform duration-700 group-hover:scale-110"
-          />
-        </div>
+
+      <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-green-50/50">
+        <Image
+          src={mainImage}
+          alt={title || "Product Image"}
+          fill
+          loading="eager"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+        />
         {/* Hover Buttons with Framer Motion */}
 
         <AnimatePresence>
@@ -87,7 +86,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content Area */}
-      <div className="bg-green-50/50 space-y-3 p-6">
+      <div className="space-y-3 p-6">
         <div className="space-y-2">
           {/* Category & Rating Row */}
           <div className="flex items-center justify-between">

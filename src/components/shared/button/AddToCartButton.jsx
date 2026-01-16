@@ -1,36 +1,19 @@
 "use client";
+import { useCart } from "@/context/CartContext";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 const AddToCartButton = ({ product, quantity = 1, className }) => {
   const [loading, setLoading] = useState(false);
-
-  const addToCart = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId: product._id, quantity }),
-      });
-      const data = await response.json();
-
-      console.log(data);
-      toast.success(`${product.title} added to cart.`);
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+  const { addToStorage } = useCart();
+  const addCartToLS = () => {
+    addToStorage(product, quantity);
   };
 
   return (
     <button
-      onClick={addToCart}
+      onClick={addCartToLS}
       disabled={loading}
-      className={`addCart flex justify-center h-11 w-full items-center gap-2 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`addCart flex justify-center h-11 w-full items-center gap-2 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
       <div className="svg-wrapper">
         <svg

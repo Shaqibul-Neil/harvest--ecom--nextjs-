@@ -10,9 +10,12 @@ import {
   ChevronRight,
   Share2,
   Heart,
+  Minus,
+  Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AddToCartButton from "../shared/button/AddToCartButton";
+import QuantityButtons from "../shared/button/QuantityButtons";
 
 const ProductDetailsCard = ({ product }) => {
   const [activeTab, setActiveTab] = useState("details");
@@ -200,25 +203,13 @@ const ProductDetailsCard = ({ product }) => {
 
             <div className="mt-10 space-y-4">
               <div className="flex items-center md:flex-row flex-col gap-4">
-                <div className="flex items-center bg-slate-50 rounded-[2rem] p-1 border border-slate-100 shadow-inner">
-                  <button
-                    className="lg:w-12 w-10 h-8 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl cursor-pointer"
-                    disabled={quantity <= 1}
-                    onClick={() => setQuantity((prev) => prev - 1)}
-                  >
-                    -
-                  </button>
-                  <span className="lg:w-12 w-10 text-center font-black text-slate-800">
-                    {quantity}
-                  </span>
-                  <button
-                    className="lg:w-12 w-10 flex items-center justify-center text-slate-400 hover:text-slate-800 transition-colors font-black text-xl cursor-pointer"
-                    disabled={quantity >= stock?.quantity}
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                  >
-                    +
-                  </button>
-                </div>
+                <QuantityButtons
+                  quantity={quantity}
+                  min={1}
+                  max={stock?.quantity}
+                  onIncrease={() => setQuantity((prev) => prev + 1)}
+                  onDecrease={() => setQuantity((prev) => prev - 1)}
+                />
                 <div className="flex-1">
                   <AddToCartButton
                     product={product}
