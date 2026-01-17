@@ -11,8 +11,6 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   // Prevent double execution (button spam / strict mode safety)
   const isAddingRef = useRef(false);
-  // FLAG: Once fetched, don't fetch again in this session
-  const hasFetchedRef = useRef(false);
   // Avoid server/client branching during render
   const [mounted, setMounted] = useState(false);
   // Check if the user is logged in or not
@@ -20,6 +18,7 @@ export const CartProvider = ({ children }) => {
 
   /* -------- CART STATE -------- */
   const [cart, setCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   /* ====================================================================
      NEW SIMPLIFIED LOGIC: DARAZ STYLE (Login Required, DB Only)
@@ -28,19 +27,29 @@ export const CartProvider = ({ children }) => {
   /* -------- FETCH CART ON LOGIN -------- */
   useEffect(() => {
     const fetchCartFromDB = async () => {
-      // Only fetch for authenticated users who haven't fetched yet
-      if (
-        status === "authenticated" &&
-        session?.user &&
-        !hasFetchedRef.current
-      ) {
+      // Still loading if status is loading
+      if (status === "loading") {
+        setIsLoading(true);
+        return;
+      }
+
+      // If not authenticated, stop loading (no cart to fetch)
+      if (status === "unauthenticated") {
+        setIsLoading(false);
+        return;
+      }
+
+      // Authenticated user - fetch cart from DB
+      if (status === "authenticated" && session?.user) {
+        setIsLoading(true);
         try {
           const response = await fetch("/api/cart", { cache: "no-store" });
           const data = await response.json();
-          hasFetchedRef.current = true;
           setCart(data.success && data.cartItems ? data.cartItems : []);
         } catch (error) {
           console.error("Fetch Cart Error:", error);
+        } finally {
+          setIsLoading(false);
         }
       }
     };
@@ -159,13 +168,13 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = (productId, price) => {
     // Find item first (match both productId and price)
     const item = cart.find(
-      (item) => item.productId === productId && item.price === price
+      (item) => item.productId === productId && item.price === price,
     );
 
     // Update cart state (optimistic UI update)
     setCart((prevCart) => {
       return prevCart.filter(
-        (item) => !(item.productId === productId && item.price === price)
+        (item) => !(item.productId === productId && item.price === price),
       );
     });
 
@@ -189,6 +198,7 @@ export const CartProvider = ({ children }) => {
   /* -------- CONTEXT VALUE -------- */
   const value = {
     cart,
+    isLoading,
     addToStorage,
     mounted,
     increaseQuantity,

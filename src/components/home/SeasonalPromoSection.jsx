@@ -131,12 +131,15 @@ const SeasonalPromoSection = () => {
                   </p>
 
                   <div className="mt-4 flex items-center gap-3">
+                    <span className="text-base font-semibold text-slate-700">
+                      Starts from :
+                    </span>
                     <span className="text-xl font-black text-green-700">
-                      ৳{item.price}
+                      ${item.price}
                     </span>
                     {item.oldPrice && (
                       <span className="text-sm font-bold text-slate-300 line-through">
-                        ৳{item.oldPrice}
+                        ${item.oldPrice}
                       </span>
                     )}
                   </div>
