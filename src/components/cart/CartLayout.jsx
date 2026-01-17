@@ -9,7 +9,7 @@ import CartSkeleton from "../shared/skeletons/CartSkeleton";
 
 const CartLayout = () => {
   const { cart, isLoading } = useCart();
-
+  console.log(cart);
   const subtotal = useMemo(
     () => cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0,
     [cart],

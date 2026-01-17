@@ -13,16 +13,11 @@ export const CartProvider = ({ children }) => {
   const isAddingRef = useRef(false);
   // Avoid server/client branching during render
   const [mounted, setMounted] = useState(false);
-  // Check if the user is logged in or not
-  const { data: session, status } = useSession();
-
   /* -------- CART STATE -------- */
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  /* ====================================================================
-     NEW SIMPLIFIED LOGIC: DARAZ STYLE (Login Required, DB Only)
-     ==================================================================== */
+  // Check if the user is logged in or not
+  const { data: session, status } = useSession();
 
   /* -------- FETCH CART ON LOGIN -------- */
   useEffect(() => {
@@ -32,7 +27,6 @@ export const CartProvider = ({ children }) => {
         setIsLoading(true);
         return;
       }
-
       // If not authenticated, stop loading (no cart to fetch)
       if (status === "unauthenticated") {
         setIsLoading(false);
@@ -62,33 +56,46 @@ export const CartProvider = ({ children }) => {
     setMounted(true);
   }, []);
 
-  /* -------- ADD TO CART FUNCTION (LOGIN REQUIRED) -------- */
-  const addToStorage = (product, quantity = 1) => {
+  /* -------- ADD TO CART (Amazon Style - productId only) -------- */
+  const addToStorage = async (product, quantity = 1) => {
     try {
       // Double-check: Only logged-in users can add to cart
       if (status !== "authenticated") {
         toast.error("Please login to add items to cart");
         return;
       }
-
       if (!product?._id || quantity <= 0) return;
       if (isAddingRef.current) return;
 
       isAddingRef.current = true;
-
-      const price = product.sellingPrice || product.price?.mrp;
+      const currentPrice = product.sellingPrice || product.price?.mrp;
 
       setCart((prevCart) => {
+        // Amazon Style: Check by productId ONLY
         const index = prevCart.findIndex(
-          (item) => item.productId === product._id && item.price === price,
+          (item) => item.productId === product._id,
         );
 
         // Update existing item
         if (index > -1) {
           const updatedCart = [...prevCart];
+          const existingItem = updatedCart[index];
+
+          // Check if price changed from current
+          const priceChanged = existingItem.price !== currentPrice;
+
           updatedCart[index] = {
-            ...updatedCart[index],
-            quantity: updatedCart[index].quantity + quantity,
+            ...existingItem,
+            quantity: existingItem.quantity + quantity,
+            // Always update to current price
+            price: currentPrice,
+            // Store the PREVIOUS price (so user sees what it was before)
+            previousPrice: priceChanged
+              ? existingItem.price
+              : existingItem.previousPrice,
+            // Keep track of ORIGINAL price when first added
+            originalPrice: existingItem.originalPrice || existingItem.price,
+            hasPriceChanged: priceChanged,
           };
           return updatedCart;
         }
@@ -100,7 +107,10 @@ export const CartProvider = ({ children }) => {
             productId: product._id,
             title: product.title,
             image: product.mainImage,
-            price,
+            price: currentPrice,
+            previousPrice: null, // No previous price when first added
+            originalPrice: currentPrice, // Track original price
+            hasPriceChanged: false,
             quantity,
             stock: product.stock?.quantity || 0,
           },
@@ -116,7 +126,7 @@ export const CartProvider = ({ children }) => {
 
       // Save to database (logged-in users only)
       if (session?.user) {
-        fetch("/api/cart", {
+        await fetch("/api/cart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -129,16 +139,21 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  /* -------- INCREASE QUANTITY -------- */
+  /* -------- INCREASE QUANTITY (Local only - sync at checkout) -------- */
   const increaseQuantity = (productId) => {
+    // find the current item
+    const currentItem = cart.find((item) => item.productId === productId);
+
+    // Stock check - before setCart
+    if (!currentItem) return;
+    if (currentItem.stock <= currentItem.quantity) {
+      toast.error("Stock Limit Reached");
+      return;
+    }
     setCart((prevCart) => {
       const index = prevCart.findIndex((item) => item.productId === productId);
       if (index === -1) return prevCart;
       const item = prevCart[index];
-      if (item.stock <= item.quantity) {
-        toast.error("Stock Limit Reached");
-        return prevCart;
-      }
       const updatedCart = [...prevCart];
       updatedCart[index] = {
         ...updatedCart[index],
@@ -148,8 +163,14 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  /* -------- DECREASE QUANTITY -------- */
+  /* -------- DECREASE QUANTITY (Local only - sync at checkout) -------- */
   const decreaseQuantity = (productId) => {
+    // find the current item
+    const currentItem = cart.find((item) => item.productId === productId);
+
+    // Stock check - before setCart
+    if (!currentItem || currentItem.quantity <= 1) return;
+
     setCart((prevCart) => {
       const index = prevCart.findIndex((item) => item.productId === productId);
       if (index === -1) return prevCart;
@@ -158,24 +179,20 @@ export const CartProvider = ({ children }) => {
       const updatedCart = [...prevCart];
       updatedCart[index] = {
         ...updatedCart[index],
-        quantity: updatedCart[index].quantity - 1,
+        quantity: item.quantity - 1,
       };
       return updatedCart;
     });
   };
 
   /* -------- REMOVE FROM CART -------- */
-  const removeFromCart = (productId, price) => {
-    // Find item first (match both productId and price)
-    const item = cart.find(
-      (item) => item.productId === productId && item.price === price,
-    );
+  const removeFromCart = (productId) => {
+    // Find item first
+    const item = cart.find((item) => item.productId === productId);
 
     // Update cart state (optimistic UI update)
     setCart((prevCart) => {
-      return prevCart.filter(
-        (item) => !(item.productId === productId && item.price === price),
-      );
+      return prevCart.filter((item) => item.productId !== productId);
     });
 
     // Show toast (outside setCart)
@@ -190,7 +207,7 @@ export const CartProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ productId, price }),
+        body: JSON.stringify({ productId }),
       });
     }
   };
@@ -217,82 +234,3 @@ export const useCart = () => {
   }
   return context;
 };
-
-/* ====================================================================
-     COMMENTED OUT: OLD LOCAL STORAGE LOGIC (Daraz Style - No Guest Cart)
-     ==================================================================== */
-
-// /* -------- SYNC CART TO LOCAL STORAGE (DISABLED) -------- */
-// useEffect(() => {
-//   if (isFromServerRef.current) {
-//     isFromServerRef.current = false;
-//     return;
-//   }
-//   if (status === "unauthenticated") {
-//     localStorage.setItem("harvest_cart", JSON.stringify(cart));
-//   }
-// }, [cart, status]);
-
-// /* -------- INITIAL LOAD FOR GUEST (DISABLED) -------- */
-// useEffect(() => {
-//   if (mounted && status === "unauthenticated") {
-//     try {
-//       const localCart =
-//         JSON.parse(localStorage.getItem("harvest_cart")) || [];
-//       if (localCart.length > 0) {
-//         setCart(localCart);
-//       }
-//     } catch (error) {
-//       console.error("Error loading cart from localStorage:", error);
-//     }
-//   }
-// }, [mounted, status]);
-
-// /* -------- OLD SYNC ON LOGIN WITH MERGE (DISABLED) -------- */
-// const isFromServerRef = useRef(false);
-// const isSyncingRef = useRef(false);
-// const hasSyncedRef = useRef(false);
-//
-// useEffect(() => {
-//   const syncWithDB = async () => {
-//     if (hasSyncedRef.current) return;
-//     const localCartData = localStorage.getItem("harvest_cart");
-//     const parsedLocalCart = localCartData ? JSON.parse(localCartData) : [];
-//
-//     if (status === "authenticated" && session?.user) {
-//       if (isSyncingRef.current) return;
-//       isSyncingRef.current = true;
-//       try {
-//         const isFirstLogin =
-//           parsedLocalCart.length > 0 && !hasSyncedRef.current;
-//
-//         if (isFirstLogin) {
-//           // MERGE LOGIC - Now disabled
-//           const response = await fetch("/api/cart/sync", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ localItems: parsedLocalCart }),
-//           });
-//           const data = await response.json();
-//           if (data.success && data.cartItems) {
-//             hasSyncedRef.current = true;
-//             localStorage.removeItem("harvest_cart");
-//             isFromServerRef.current = true;
-//             setCart(data.cartItems);
-//           }
-//         } else {
-//           const response = await fetch("/api/cart", { cache: "no-store" });
-//           const data = await response.json();
-//           hasSyncedRef.current = true;
-//           isFromServerRef.current = true;
-//           setCart(data.success && data.cartItems ? data.cartItems : []);
-//         }
-//       } catch (error) {
-//         console.error("Sync/Fetch Error:", error);
-//       } finally {
-//         isSyncingRef.current = false;
-//       }
-//     }
-//   };
-//   syncWithDB();
-// }, [status, session]);

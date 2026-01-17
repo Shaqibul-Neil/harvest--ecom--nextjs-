@@ -1,47 +1,35 @@
 import { collections } from "@/lib/constants";
 import { dbConnect } from "@/lib/dbConnect";
+import { ObjectId } from "mongodb";
+
 const cartCollection = () => dbConnect(collections.CARTS);
 
-//Check cart by owner
+// Find cart by owner (userId)
 export const findCartByOwner = async (ownerId) => {
-  return await cartCollection().findOne({
-    $or: [{ userId: ownerId }, { guestId: ownerId }],
-  });
+  return await cartCollection().findOne({ userId: ownerId });
 };
-//Update cart
-export const updateCart = async (cartId, cartData) => {
-  return await cartCollection().updateOne(
-    { _id: cartId },
-    { $set: cartData },
-    { upsert: true }, //if no cart then creates new cart
-  );
-};
-//Create a new cart
+
+// Create a new cart
 export const createCart = async (cartData) => {
   return await cartCollection().insertOne(cartData);
 };
-//Delete cart
+
+// Update entire cart
+export const updateCart = async (cartId, cartData) => {
+  return await cartCollection().updateOne(
+    { _id: new ObjectId(cartId) },
+    { $set: cartData },
+    { upsert: true },
+  );
+};
+
+// Delete entire cart (for checkout complete)
 export const deleteCart = async (cartId) => {
-  return await cartCollection().deleteOne({ _id: cartId });
+  return await cartCollection().deleteOne({ _id: new ObjectId(cartId) });
 };
 
-//Get all cart
-export const getCart = async (ownerId) => {
-  return await cartCollection()
-    .find({
-      $or: [{ userId: ownerId }, { guestId: ownerId }],
-    })
-    .toArray();
+// Get cart items only
+export const getCartItems = async (userId) => {
+  const cart = await findCartByOwner(userId);
+  return cart?.items || [];
 };
-
-// User একটা item delete করে
-// deleteCartItemService()
-// Checkout complete
-// deleteCart()
-//  ← পুরো cart delete
-// Clear All items
-// deleteCart()
-//  ← পুরো cart delete
-// Abandoned cart cleanup
-// deleteCart()
-//  ← পুরো cart delete

@@ -1,40 +1,22 @@
-import { handleAddToCart, handleDeleteCartItem } from "@/controllers/cartController";
-import { authOptions } from "@/lib/authOptions";
-import { findCartByOwner } from "@/repositories/cartRepository";
-import { getServerSession } from "next-auth";
+import {
+  getCartController,
+  addToCartController,
+  updateCartQuantityController,
+  deleteCartItemController,
+} from "@/controllers/cartController";
 
-// POST - Add item to cart
+export async function GET() {
+  return await getCartController();
+}
+
 export async function POST(req) {
-  return await handleAddToCart(req);
+  return await addToCartController(req);
 }
 
-// GET - Fetch cart items
-export async function GET(req) {
-  try {
-    const session = await getServerSession(authOptions);
-    // If not logged in, return empty cart
-    if (!session) {
-      return Response.json({ success: true, cartItems: [] });
-    }
-
-    // If logged in, find the cart from database
-    const cart = await findCartByOwner(session.user.id);
-
-    // Return items if cart exists, otherwise empty array
-    return Response.json({
-      success: true,
-      cartItems: cart?.items || [],
-    });
-  } catch (error) {
-    console.error("Get Cart Error:", error);
-    return Response.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
-  }
+export async function PATCH(req) {
+  return await updateCartQuantityController(req);
 }
 
-// DELETE - Remove item from cart
 export async function DELETE(req) {
-  return await handleDeleteCartItem(req);
+  return await deleteCartItemController(req);
 }

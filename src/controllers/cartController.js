@@ -1,67 +1,126 @@
 import { authOptions } from "@/lib/authOptions";
-import { addToCartService, deleteCartItemService } from "@/services/cartService";
+import {
+  addToCartService,
+  clearCartService,
+  deleteCartItemService,
+  getCartService,
+  updateCartQuantityService,
+} from "@/services/cartService";
 import { getServerSession } from "next-auth";
 
-// Add item to cart
-export const handleAddToCart = async (req) => {
+// GET - Fetch cart items
+export const getCartController = async () => {
   try {
-    const { productId, quantity } = await req.json();
-
     const session = await getServerSession(authOptions);
-
-    // Reject if not logged in
     if (!session?.user?.id) {
-      return Response.json(
-        { success: false, message: "Login required to add to cart" },
-        { status: 401 }
-      );
+      return Response.json({ success: true, cartItems: [] });
     }
 
-    const result = await addToCartService(
-      { userId: session.user.id },
-      productId,
-      quantity
-    );
-
-    return Response.json({
-      success: true,
-      message: "Cart updated successfully",
-    });
+    const cartItems = await getCartService(session.user.id);
+    return Response.json({ success: true, cartItems });
   } catch (error) {
-    console.error("Cart Update Error:", error);
+    console.error("Get Cart Error:", error);
     return Response.json(
       { success: false, message: error.message },
-      { status: 400 }
+      { status: 500 },
     );
   }
 };
 
-// Delete item from cart
-export const handleDeleteCartItem = async (req) => {
+// POST - Add item to cart
+export const addToCartController = async (req) => {
   try {
-    const { productId, price } = await req.json();
-
     const session = await getServerSession(authOptions);
-
-    // Reject if not logged in
     if (!session?.user?.id) {
       return Response.json(
         { success: false, message: "Login required" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
-    const result = await deleteCartItemService(session.user.id, productId, price);
+    const { productId, quantity } = await req.json();
+    const result = await addToCartService(session.user.id, productId, quantity);
 
-    return Response.json({
-      success: true,
-      message: "Item removed from cart",
-    });
+    return Response.json(result);
   } catch (error) {
-    console.error("Cart Delete Error:", error);
+    console.error("Add to Cart Error:", error);
     return Response.json(
       { success: false, message: error.message },
-      { status: 400 }
+      { status: 400 },
+    );
+  }
+};
+
+// PATCH - Update quantity
+export const updateCartQuantityController = async (req) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return Response.json(
+        { success: false, message: "Login required" },
+        { status: 401 },
+      );
+    }
+
+    const { productId, action } = await req.json();
+    const result = await updateCartQuantityService(
+      session.user.id,
+      productId,
+      action,
+    );
+
+    return Response.json(result);
+  } catch (error) {
+    console.error("Update Cart Error:", error);
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 400 },
+    );
+  }
+};
+
+// DELETE - Remove item from cart (Amazon Style - productId only)
+export const deleteCartItemController = async (req) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return Response.json(
+        { success: false, message: "Login required" },
+        { status: 401 },
+      );
+    }
+
+    const { productId } = await req.json();
+    const result = await deleteCartItemService(session.user.id, productId);
+
+    return Response.json(result);
+  } catch (error) {
+    console.error("Delete Cart Item Error:", error);
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 400 },
+    );
+  }
+};
+
+// DELETE ALL - Clear cart (for checkout)
+export const clearCartController = async () => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return Response.json(
+        { success: false, message: "Login required" },
+        { status: 401 },
+      );
+    }
+
+    const result = await clearCartService(session.user.id);
+    return Response.json(result);
+  } catch (error) {
+    console.error("Clear Cart Error:", error);
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 400 },
     );
   }
 };
