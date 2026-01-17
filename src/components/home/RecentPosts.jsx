@@ -20,6 +20,7 @@ const RecentPosts = () => {
       id: 1,
       image: blog1,
       category: "Organic Food",
+      categoryColor: "bg-green-500",
       date: "Oct 12, 2026",
       title: "Secrets to Picking the Freshest Organic Fruits",
       excerpt:
@@ -29,6 +30,7 @@ const RecentPosts = () => {
       id: 2,
       image: blog2,
       category: "Cooking",
+      categoryColor: "bg-amber-500",
       date: "Oct 08, 2026",
       title: "5 Quick & Healthy Breakfast Bowls With Harvest Greens",
       excerpt:
@@ -38,6 +40,7 @@ const RecentPosts = () => {
       id: 3,
       image: blog3,
       category: "Sustainability",
+      categoryColor: "bg-teal-500",
       date: "Oct 05, 2026",
       title: "Exploring the Benefits of Farm-to-Table Shopping",
       excerpt:
@@ -47,6 +50,7 @@ const RecentPosts = () => {
       id: 4,
       image: blog4,
       category: "Eco Friendly",
+      categoryColor: "bg-emerald-600",
       date: "Oct 01, 2026",
       title: "Sustainable Kitchen Habits: Reducing Food Waste Daily",
       excerpt:
@@ -83,7 +87,7 @@ const RecentPosts = () => {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute top-6 left-6">
-                <span className="px-4 py-1.5 bg-green-500 text-white text-[0.6rem] font-black uppercase tracking-widest rounded-full shadow-lg">
+                <span className={`px-4 py-1.5 ${blog.categoryColor} text-white text-[0.6rem] font-black uppercase tracking-widest rounded-full shadow-lg`}>
                   {blog.category}
                 </span>
               </div>

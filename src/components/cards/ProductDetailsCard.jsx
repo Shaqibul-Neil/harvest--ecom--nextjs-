@@ -57,7 +57,7 @@ const ProductDetailsCard = ({ product }) => {
           "fill-current",
           i < Math.round(avgRating)
             ? "text-green-500"
-            : "text-slate-200 shadow-sm"
+            : "text-slate-200 shadow-sm",
         )}
       />
     ));
@@ -90,7 +90,7 @@ const ProductDetailsCard = ({ product }) => {
                     "px-4 py-2 rounded-xl text-[0.65rem] font-black uppercase tracking-widest shadow-lg backdrop-blur-md",
                     stock?.status === "IN_STOCK"
                       ? "bg-green-500/90 text-white"
-                      : "bg-rose-500/90 text-white"
+                      : "bg-rose-500/90 text-white",
                   )}
                 >
                   {stock?.status?.replace("_", " ")}
@@ -201,7 +201,7 @@ const ProductDetailsCard = ({ product }) => {
               </div>
             </div>
 
-            <div className="mt-10 space-y-4">
+            <div className="mt-10 space-y-4 mx-auto">
               <div className="flex items-center md:flex-row flex-col gap-4">
                 <QuantityButtons
                   quantity={quantity}
@@ -214,7 +214,7 @@ const ProductDetailsCard = ({ product }) => {
                   <AddToCartButton
                     product={product}
                     quantity={quantity}
-                    className="h-14 rounded-2xl shadow-xl shadow-green-200"
+                    className="h-11 w-48 rounded-2xl shadow-xl shadow-green-200 bg-green-700 text-white"
                   />
                 </div>
               </div>
@@ -246,7 +246,7 @@ const ProductDetailsCard = ({ product }) => {
                 "px-8 py-5 md:text-sm text-xs font-black uppercase tracking-widest transition-all relative",
                 activeTab === tab.id
                   ? "text-green-600"
-                  : "text-slate-400 hover:text-slate-600"
+                  : "text-slate-400 hover:text-slate-600",
               )}
             >
               {tab.label}

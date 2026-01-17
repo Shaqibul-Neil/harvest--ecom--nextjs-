@@ -32,7 +32,7 @@ export default function MainHeader({ session }) {
   }
 
   return (
-    <header className="w-full border-b border-border py-4">
+    <header className="w-full sticky top-0 bg-white border-b border-green-500 shadow-sm z-50 py-4">
       <div className="mx-auto flex items-center justify-between w-11/12 max-w-[1440px]">
         {/* Left: Logo + Name */}
         <div className="flex items-center gap-1 relative">
@@ -47,7 +47,7 @@ export default function MainHeader({ session }) {
             </button>
             {/* SM and md Navigation */}
             <div
-              className={`bg-white dark:bg-black border-l-4 border-green-500 rounded-[2rem] shadow-2xl z-20 transform transition-all duration-500 top-full absolute w-56 left-0 ${
+              className={`dark:bg-black border-l-4 border-green-500 rounded-[2rem] shadow-2xl z-20 transform transition-all duration-500 top-full absolute w-56 left-0 ${
                 menuOpen
                   ? "translate-y-2 opacity-100 pointer-events-auto"
                   : "-translate-y-5 opacity-0 pointer-events-none"
@@ -95,14 +95,16 @@ export default function MainHeader({ session }) {
                       "px-4 py-2 text-[0.7rem] font-black uppercase tracking-[0.2em] transition-all relative overflow-hidden group",
                       path === link.href
                         ? "text-green-600"
-                        : "text-slate-400 hover:text-slate-800"
+                        : "text-slate-400 hover:text-slate-800",
                     )}
                   >
                     {link.title}
                     <div
                       className={cn(
                         "absolute bottom-0 left-0 h-0.5 bg-green-500 transition-all duration-500",
-                        path === link.href ? "w-full" : "w-0 group-hover:w-full"
+                        path === link.href
+                          ? "w-full"
+                          : "w-0 group-hover:w-full",
                       )}
                     />
                   </Link>

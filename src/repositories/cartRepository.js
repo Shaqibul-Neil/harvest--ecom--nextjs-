@@ -13,7 +13,7 @@ export const updateCart = async (cartId, cartData) => {
   return await cartCollection().updateOne(
     { _id: cartId },
     { $set: cartData },
-    { upsert: true } //if no cart then creates new cart
+    { upsert: true }, //if no cart then creates new cart
   );
 };
 //Create a new cart
@@ -33,3 +33,15 @@ export const getCart = async (ownerId) => {
     })
     .toArray();
 };
+
+// User একটা item delete করে
+// deleteCartItemService()
+// Checkout complete
+// deleteCart()
+//  ← পুরো cart delete
+// Clear All items
+// deleteCart()
+//  ← পুরো cart delete
+// Abandoned cart cleanup
+// deleteCart()
+//  ← পুরো cart delete

@@ -1,20 +1,39 @@
 "use client";
 import { useCart } from "@/context/CartContext";
+import { showLoginRequiredAlert } from "@/lib/toast";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const AddToCartButton = ({ product, quantity = 1, className }) => {
   const [loading, setLoading] = useState(false);
   const { addToStorage } = useCart();
-  const addCartToLS = () => {
+  const { status } = useSession();
+  const router = useRouter();
+
+  const handleAddToCart = async () => {
+    // Check if user is logged in
+    if (status !== "authenticated") {
+      // Show SweetAlert for login required
+      const result = await showLoginRequiredAlert();
+      if (result.isConfirmed) {
+        // Redirect to login page
+        router.push("/login");
+      }
+      return;
+    }
+
+    // User is logged in, proceed with adding to cart
+    setLoading(true);
     addToStorage(product, quantity);
     setLoading(false);
   };
 
   return (
     <button
-      onClick={addCartToLS}
+      onClick={handleAddToCart}
       disabled={loading}
-      className={`addCart flex justify-center h-11 w-full items-center gap-2 bg-white text-green-700 border-green-700 border font-bold rounded-2xl hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`addCart flex justify-center h-11 items-center gap-2 font-bold rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
       <div className="svg-wrapper">
         <svg

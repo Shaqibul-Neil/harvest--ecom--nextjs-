@@ -18,8 +18,8 @@ const ProductCard = ({ product }) => {
         className={cn(
           "fill-current",
           i < Math.round(avgRating)
-            ? "text-green-600"
-            : "text-gray-200 stroke-gray-200"
+            ? "text-amber-500"
+            : "text-gray-200 stroke-gray-200",
         )}
       />
     ));
@@ -95,7 +95,12 @@ const ProductCard = ({ product }) => {
 
         {/* Action button */}
         <div className="pt-2">
-          <AddToCartButton product={product} />
+          <AddToCartButton
+            product={product}
+            className={
+              "w-full bg-white text-green-700 border-green-700 border hover:text-white"
+            }
+          />
         </div>
       </div>
     </div>

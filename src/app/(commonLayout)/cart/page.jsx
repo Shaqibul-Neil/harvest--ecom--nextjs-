@@ -1,16 +1,19 @@
 "use client";
 import EmptyCart from "@/components/cart/EmptyCart";
 import PrimaryButton from "@/components/shared/button/PrimaryButton";
+import QuantityButtons from "@/components/shared/button/QuantityButtons";
 import MainHeadings from "@/components/shared/headings/MainHeadings";
 import SubHeadings from "@/components/shared/headings/SubHeadings";
 import { useCart } from "@/context/CartContext";
 import { ArrowRight, Minus, Plus, Tag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const Cart = () => {
-  const { cart } = useCart();
+  const { cart, increaseQuantity, decreaseQuantity, removeFromCart } =
+    useCart();
+  console.log(cart);
   const subtotal =
     cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
   const shipping = subtotal > 500 ? 0 : 50;
@@ -85,21 +88,20 @@ const Cart = () => {
                   <div className="flex flex-row justify-between items-center gap-4">
                     {/* Quantity Selector Group */}
                     <div className="flex items-center justify-center sm:justify-start gap-4">
-                      <div className="flex items-center bg-slate-50 border border-slate-200 rounded-full p-1 shadow-inner">
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-slate-600 hover:bg-red-50 hover:text-red-500 transition-colors shadow-sm">
-                          <Minus size={14} />
-                        </button>
-                        <span className="w-10 text-center font-bold text-slate-700">
-                          {item.quantity}
-                        </span>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-slate-600 hover:bg-green-50 hover:text-green-600 transition-colors shadow-sm">
-                          <Plus size={14} />
-                        </button>
-                      </div>
+                      <QuantityButtons
+                        quantity={item.quantity}
+                        min={1}
+                        max={item.stock}
+                        onIncrease={() => increaseQuantity(item.productId)}
+                        onDecrease={() => decreaseQuantity(item.productId)}
+                      />
                     </div>
 
                     {/* Delete Icon */}
-                    <button className="p-3 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 cursor-pointer">
+                    <button
+                      className="p-3 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 cursor-pointer"
+                      onClick={() => removeFromCart(item.productId, item.price)}
+                    >
                       <Trash2 size={20} />
                     </button>
                   </div>

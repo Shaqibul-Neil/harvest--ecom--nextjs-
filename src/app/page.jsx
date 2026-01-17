@@ -24,12 +24,13 @@ export default async function Home() {
       <section className="max-w-[1440px] w-11/12 mx-auto px-5 my-16">
         <FeaturedProducts />
       </section>
-      <section className="bg-green-50/50 py-8 md:mb-10 mb-8 lg:mb-16">
+      <section className="bg-stone-50 py-8 md:mb-10 mb-8 lg:mb-16">
         <WhyChooseUs />
       </section>
       <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:my-32 md:my-32 my-20">
         <FeaturedHighlightSection />
       </section>
+      {/* Another section here for most bought foods */}
       <section className="lg:my-32 md:my-16 my-8">
         <SeasonalPromoSection />
       </section>

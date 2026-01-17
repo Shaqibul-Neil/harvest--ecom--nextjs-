@@ -14,6 +14,8 @@ const slides = [
     img: fruit,
     key: 1,
     badge: "Seasonal Pick",
+    badgeColor: "border-amber-300/50 text-amber-700",
+    badgeDot: "bg-amber-500",
     discount: "Save 10%",
   },
   {
@@ -23,6 +25,8 @@ const slides = [
     img: bakery,
     key: 2,
     badge: "Fresh Today",
+    badgeColor: "border-rose-300/50 text-rose-600",
+    badgeDot: "bg-rose-500",
     discount: "Save 20%",
   },
   {
@@ -32,6 +36,8 @@ const slides = [
     img: vegetable,
     key: 3,
     badge: "Free Delivery",
+    badgeColor: "border-green-200/50 text-green-700",
+    badgeDot: "bg-green-500",
     discount: "Free Ship",
   },
 ];

@@ -11,114 +11,57 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   // Prevent double execution (button spam / strict mode safety)
   const isAddingRef = useRef(false);
-  // To prevent multiple data fetch when user tries login logout too fast too many times and to prevent RACE CONDITION.
-  const isSyncingRef = useRef(false);
-  // FLAG: Once synced, never sync again in this session (prevents infinite loop)
-  const hasSyncedRef = useRef(false);
-  // FLAG: Skip localStorage write when data comes from server
-  const isFromServerRef = useRef(false);
+  // FLAG: Once fetched, don't fetch again in this session
+  const hasFetchedRef = useRef(false);
   // Avoid server/client branching during render
   const [mounted, setMounted] = useState(false);
   // Check if the user is logged in or not
   const { data: session, status } = useSession();
 
-  /* -------- INITIAL STATE FROM LOCAL STORAGE -------- */
-  const [cart, setCart] = useState(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      return JSON.parse(localStorage.getItem("harvest_cart")) || [];
-    } catch (error) {
-      console.error("Invalid cart data in localStorage");
-      return [];
-    }
-  });
+  /* -------- CART STATE -------- */
+  const [cart, setCart] = useState([]);
 
-  /* -------- SYNC CART TO LOCAL STORAGE -------- */
+  /* ====================================================================
+     NEW SIMPLIFIED LOGIC: DARAZ STYLE (Login Required, DB Only)
+     ==================================================================== */
+
+  /* -------- FETCH CART ON LOGIN -------- */
   useEffect(() => {
-    // Skip writing to localStorage if data just came from server (prevents loop)
-    if (isFromServerRef.current) {
-      isFromServerRef.current = false;
-      return;
-    }
-    localStorage.setItem("harvest_cart", JSON.stringify(cart));
-  }, [cart]);
-
-  /* -------- SYNC ON LOGIN -------- */
-  useEffect(() => {
-    const syncWithDB = async () => {
-      // If already synced in this session, do nothing
-      if (hasSyncedRef.current) return;
-
-      const localCartData = localStorage.getItem("harvest_cart");
-      const parsedLocalCart = localCartData ? JSON.parse(localCartData) : [];
-      //case 1: logged in + data in local = merge
+    const fetchCartFromDB = async () => {
+      // Only fetch for authenticated users who haven't fetched yet
       if (
         status === "authenticated" &&
         session?.user &&
-        parsedLocalCart.length > 0
+        !hasFetchedRef.current
       ) {
-        if (isSyncingRef.current) return;
-        isSyncingRef.current = true;
-
         try {
-          const response = await fetch("/api/cart/sync", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ localItems: parsedLocalCart }),
-          });
-
+          const response = await fetch("/api/cart", { cache: "no-store" });
           const data = await response.json();
-
-          if (data.success && data.cartItems) {
-            // Mark as synced so it won't sync again
-            hasSyncedRef.current = true;
-            // Clear localStorage FIRST
-            localStorage.removeItem("harvest_cart");
-            // Set flag to skip the localStorage write in useEffect
-            isFromServerRef.current = true;
-            // Update state with server data
-            setCart(data.cartItems);
-          }
-        } catch (error) {
-          console.error("Sync Error:", error);
-        } finally {
-          isSyncingRef.current = false;
-        }
-      }
-      //case 2 : logged in + local empty = fetch from database
-      else if (
-        status === "authenticated" &&
-        session?.user &&
-        parsedLocalCart.length === 0
-      ) {
-        if (isSyncingRef.current) return;
-        isSyncingRef.current = true;
-        try {
-          const response = await fetch("/api/cart");
-          const data = await response.json();
-          if (data.success && data.cartItems?.length > 0) {
-            hasSyncedRef.current = true; // data fetch completed do not need to fetch again
-            isFromServerRef.current = true;
-            setCart(data.cartItems);
-          }
+          hasFetchedRef.current = true;
+          setCart(data.success && data.cartItems ? data.cartItems : []);
         } catch (error) {
           console.error("Fetch Cart Error:", error);
-        } finally {
-          isSyncingRef.current = false;
         }
       }
     };
 
-    syncWithDB();
+    fetchCartFromDB();
   }, [status, session]);
 
+  /* -------- MOUNTED STATE -------- */
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  /* -------- ADD TO CART FUNCTION -------- */
+  /* -------- ADD TO CART FUNCTION (LOGIN REQUIRED) -------- */
   const addToStorage = (product, quantity = 1) => {
     try {
+      // Double-check: Only logged-in users can add to cart
+      if (status !== "authenticated") {
+        toast.error("Please login to add items to cart");
+        return;
+      }
+
       if (!product?._id || quantity <= 0) return;
       if (isAddingRef.current) return;
 
@@ -128,7 +71,7 @@ export const CartProvider = ({ children }) => {
 
       setCart((prevCart) => {
         const index = prevCart.findIndex(
-          (item) => item.productId === product._id && item.price === price
+          (item) => item.productId === product._id && item.price === price,
         );
 
         // Update existing item
@@ -150,26 +93,97 @@ export const CartProvider = ({ children }) => {
             image: product.mainImage,
             price,
             quantity,
+            stock: product.stock?.quantity || 0,
           },
         ];
       });
 
       toast.success(`${product.title} added to cart`);
 
-      // release lock
+      // Release lock
       setTimeout(() => {
         isAddingRef.current = false;
       }, 300);
 
-      //add to the database for admin abandoned cart analytics
+      // Save to database (logged-in users only)
+      if (session?.user) {
+        fetch("/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productId: product._id, quantity }),
+        });
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+    }
+  };
+
+  /* -------- INCREASE QUANTITY -------- */
+  const increaseQuantity = (productId) => {
+    setCart((prevCart) => {
+      const index = prevCart.findIndex((item) => item.productId === productId);
+      if (index === -1) return prevCart;
+      const item = prevCart[index];
+      if (item.stock <= item.quantity) {
+        toast.error("Stock Limit Reached");
+        return prevCart;
+      }
+      const updatedCart = [...prevCart];
+      updatedCart[index] = {
+        ...updatedCart[index],
+        quantity: item.quantity + 1,
+      };
+      return updatedCart;
+    });
+  };
+
+  /* -------- DECREASE QUANTITY -------- */
+  const decreaseQuantity = (productId) => {
+    setCart((prevCart) => {
+      const index = prevCart.findIndex((item) => item.productId === productId);
+      if (index === -1) return prevCart;
+      const item = prevCart[index];
+      if (item.quantity <= 1) return prevCart;
+      const updatedCart = [...prevCart];
+      updatedCart[index] = {
+        ...updatedCart[index],
+        quantity: updatedCart[index].quantity - 1,
+      };
+      return updatedCart;
+    });
+  };
+
+  /* -------- REMOVE FROM CART -------- */
+  const removeFromCart = (productId, price) => {
+    // Find item first (match both productId and price)
+    const item = cart.find(
+      (item) => item.productId === productId && item.price === price
+    );
+
+    // Update cart state (optimistic UI update)
+    setCart((prevCart) => {
+      return prevCart.filter(
+        (item) => !(item.productId === productId && item.price === price)
+      );
+    });
+
+    // Show toast (outside setCart)
+    if (item) {
+      toast.success(`${item.title} removed from cart`);
+    }
+
+    // Delete from database (logged-in users only)
+    if (session?.user) {
       fetch("/api/cart", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ productId: product._id, quantity }),
+        body: JSON.stringify({ productId, price }),
       });
-    } catch (error) {}
+    }
   };
 
   /* -------- CONTEXT VALUE -------- */
@@ -177,6 +191,9 @@ export const CartProvider = ({ children }) => {
     cart,
     addToStorage,
     mounted,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
@@ -191,12 +208,81 @@ export const useCart = () => {
   return context;
 };
 
-/**isSyncing সেফগার্ডের প্রয়োজনীয়তা এবং এটি কোথায় ও কীভাবে ব্যবহার করবেন, তার বিস্তারিত ব্যাখ্যা নিচে দেওয়া হলো:
+/* ====================================================================
+     COMMENTED OUT: OLD LOCAL STORAGE LOGIC (Daraz Style - No Guest Cart)
+     ==================================================================== */
 
-১. কেন এটি প্রয়োজন? (The "Why")
-NextAuth যখন লগইন স্ট্যাটাস চেক করে, তখন status ভেরিয়েবলটি কয়েকবার পরিবর্তিত হতে পারে (যেমন: loading -> authenticated)। এর ফলে আপনার useEffect একাধিকবার ট্রিগার হতে পারে। যদি একই সাথে আপনার /api/cart/sync এপিআই-তে ৩-৪টি রিকোয়েস্ট চলে যায়, তবে ডাটাবেজে ডুপ্লিকেট ডাটা তৈরি হওয়া বা রেস কন্ডিশন (Race Condition) হওয়ার সম্ভাবনা থাকে। isSyncing সেফগার্ড নিশ্চিত করে যে, একটি সিঙ্ক প্রসেস চলাকালীন অন্য কোনো নতুন সিঙ্ক শুরু হবে না।
+// /* -------- SYNC CART TO LOCAL STORAGE (DISABLED) -------- */
+// useEffect(() => {
+//   if (isFromServerRef.current) {
+//     isFromServerRef.current = false;
+//     return;
+//   }
+//   if (status === "unauthenticated") {
+//     localStorage.setItem("harvest_cart", JSON.stringify(cart));
+//   }
+// }, [cart, status]);
 
-২. কোথায় ব্যবহার করবেন? (The "Where")
-এটি আপনার 
-CartContext.jsx
- ফাইলের "SYNC ON LOGIN" useEffect-এর ভেতরে ব্যবহার করা উচিত। যেহেতু এটি শুধুমাত্র এপিআই কল ব্লক করার জন্য, তাই এখানে একটি useRef ব্যবহার করা সবচেয়ে ভালো (ঠিক আপনার isAddingRef এর মতো), কারণ এর ফলে অপ্রয়োজনীয় রি-রেন্ডার হবে না। */
+// /* -------- INITIAL LOAD FOR GUEST (DISABLED) -------- */
+// useEffect(() => {
+//   if (mounted && status === "unauthenticated") {
+//     try {
+//       const localCart =
+//         JSON.parse(localStorage.getItem("harvest_cart")) || [];
+//       if (localCart.length > 0) {
+//         setCart(localCart);
+//       }
+//     } catch (error) {
+//       console.error("Error loading cart from localStorage:", error);
+//     }
+//   }
+// }, [mounted, status]);
+
+// /* -------- OLD SYNC ON LOGIN WITH MERGE (DISABLED) -------- */
+// const isFromServerRef = useRef(false);
+// const isSyncingRef = useRef(false);
+// const hasSyncedRef = useRef(false);
+//
+// useEffect(() => {
+//   const syncWithDB = async () => {
+//     if (hasSyncedRef.current) return;
+//     const localCartData = localStorage.getItem("harvest_cart");
+//     const parsedLocalCart = localCartData ? JSON.parse(localCartData) : [];
+//
+//     if (status === "authenticated" && session?.user) {
+//       if (isSyncingRef.current) return;
+//       isSyncingRef.current = true;
+//       try {
+//         const isFirstLogin =
+//           parsedLocalCart.length > 0 && !hasSyncedRef.current;
+//
+//         if (isFirstLogin) {
+//           // MERGE LOGIC - Now disabled
+//           const response = await fetch("/api/cart/sync", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ localItems: parsedLocalCart }),
+//           });
+//           const data = await response.json();
+//           if (data.success && data.cartItems) {
+//             hasSyncedRef.current = true;
+//             localStorage.removeItem("harvest_cart");
+//             isFromServerRef.current = true;
+//             setCart(data.cartItems);
+//           }
+//         } else {
+//           const response = await fetch("/api/cart", { cache: "no-store" });
+//           const data = await response.json();
+//           hasSyncedRef.current = true;
+//           isFromServerRef.current = true;
+//           setCart(data.success && data.cartItems ? data.cartItems : []);
+//         }
+//       } catch (error) {
+//         console.error("Sync/Fetch Error:", error);
+//       } finally {
+//         isSyncingRef.current = false;
+//       }
+//     }
+//   };
+//   syncWithDB();
+// }, [status, session]);

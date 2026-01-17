@@ -19,7 +19,7 @@ export const getFeaturedProducts = async () => {
       mainImage: 1,
       rating: 1,
       price: 1,
-      unit: 1,
+      unit: 1,stock: 1
     };
 
     const result = await findFeaturedProducts(query, { limit, projection });
@@ -45,7 +45,7 @@ export const getAllProducts = async () => {
       mainImage: 1,
       rating: 1,
       price: 1,
-      unit: 1,
+      unit: 1,stock: 1
     };
 
     const result = await findAllProducts({ projection });

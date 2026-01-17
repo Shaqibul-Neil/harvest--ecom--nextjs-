@@ -28,6 +28,7 @@
     "react-hook-form": "^7.71.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
+    "sweetalert2": "^11.26.17",
     "swiper": "^12.0.3",
     "tailwind-animate": "^0.2.10",
     "tailwind-merge": "^3.4.0",

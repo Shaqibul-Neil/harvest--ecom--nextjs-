@@ -21,6 +21,7 @@ const SeasonalPromoSection = () => {
       price: 12.5,
       oldPrice: 15.0,
       badge: "20% OFF",
+      badgeColor: "bg-amber-500 text-white",
       image: pineapple,
       theme: "bg-orange-50/50",
     },
@@ -30,6 +31,7 @@ const SeasonalPromoSection = () => {
       description: "Hand-picked this morning from local fields.",
       price: 8.99,
       badge: "LIMITED",
+      badgeColor: "bg-rose-500 text-white",
       image: strawberries,
       theme: "bg-red-50/50",
     },
@@ -40,6 +42,7 @@ const SeasonalPromoSection = () => {
       price: 10.0,
       oldPrice: 14.0,
       badge: "BEST SELLER",
+      badgeColor: "bg-yellow-500 text-slate-800",
       image: grapes,
       theme: "bg-purple-50/50",
     },
@@ -49,6 +52,7 @@ const SeasonalPromoSection = () => {
       description: "Crunchy florets perfect for a healthy stir-fry.",
       price: 4.5,
       badge: "FRESH PICK",
+      badgeColor: "bg-green-500 text-white",
       image: broccoli,
       theme: "bg-green-50/50",
     },
@@ -104,14 +108,16 @@ const SeasonalPromoSection = () => {
 
                   {/* Animated Badge */}
                   <div className="absolute top-4 left-4">
-                    <span className="flex items-center gap-1 bg-white/90 backdrop-blur-md text-green-700 text-[10px] font-black tracking-tighter px-3 py-1.5 rounded-full shadow-sm animate-pulse">
+                    <span
+                      className={`flex items-center gap-1 ${item.badgeColor} backdrop-blur-md text-[10px] font-black tracking-tighter px-3 py-1.5 rounded-full shadow-sm animate-pulse`}
+                    >
                       <Sparkles size={10} /> {item.badge}
                     </span>
                   </div>
 
                   {/* Quick Add Overlay */}
                   {/* <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <AddToCartButton />
+                  <AddToCartButton className={'w-full'}/>
                 </div> */}
                 </div>
 

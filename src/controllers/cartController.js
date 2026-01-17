@@ -1,27 +1,64 @@
 import { authOptions } from "@/lib/authOptions";
-import { getGuestId } from "@/lib/guestSession";
-import { addToCartService } from "@/services/cartService";
+import { addToCartService, deleteCartItemService } from "@/services/cartService";
 import { getServerSession } from "next-auth";
 
+// Add item to cart
 export const handleAddToCart = async (req) => {
   try {
-    const { productId, quantity } = await req.json(); //stream object
-    //1. getting the user or guest id
+    const { productId, quantity } = await req.json();
+
     const session = await getServerSession(authOptions);
-    const guestId = await getGuestId();
-     //console.log("Server side guestId check:", guestId); 
-    //2.call the add to cart service with owner info
+
+    // Reject if not logged in
+    if (!session?.user?.id) {
+      return Response.json(
+        { success: false, message: "Login required to add to cart" },
+        { status: 401 }
+      );
+    }
+
     const result = await addToCartService(
-      { userId: session?.user?.id, guestId },
+      { userId: session.user.id },
       productId,
       quantity
     );
+
     return Response.json({
       success: true,
       message: "Cart updated successfully",
     });
   } catch (error) {
     console.error("Cart Update Error:", error);
+    return Response.json(
+      { success: false, message: error.message },
+      { status: 400 }
+    );
+  }
+};
+
+// Delete item from cart
+export const handleDeleteCartItem = async (req) => {
+  try {
+    const { productId, price } = await req.json();
+
+    const session = await getServerSession(authOptions);
+
+    // Reject if not logged in
+    if (!session?.user?.id) {
+      return Response.json(
+        { success: false, message: "Login required" },
+        { status: 401 }
+      );
+    }
+
+    const result = await deleteCartItemService(session.user.id, productId, price);
+
+    return Response.json({
+      success: true,
+      message: "Item removed from cart",
+    });
+  } catch (error) {
+    console.error("Cart Delete Error:", error);
     return Response.json(
       { success: false, message: error.message },
       { status: 400 }

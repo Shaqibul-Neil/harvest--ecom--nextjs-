@@ -67,9 +67,9 @@ const BannerSlider = ({ slides }) => {
               transition={{ duration: 0.5 }}
               className="flex justify-center lg:justify-start mb-6"
             >
-              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-full px-4 py-2 shadow-lg shadow-green-100/50">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-[10px] md:text-[0.7rem] font-bold text-green-700 uppercase tracking-[0.2em]">
+              <div className={`inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border ${currentSlide.badgeColor || "border-green-200/50 text-green-700"} rounded-full px-4 py-2 shadow-lg shadow-slate-100/50`}>
+                <div className={`w-2 h-2 ${currentSlide.badgeDot || "bg-green-500"} rounded-full animate-pulse`} />
+                <span className="text-[10px] md:text-[0.7rem] font-bold uppercase tracking-[0.2em]">
                   {currentSlide.badge || "Fresh Arrival"}
                 </span>
               </div>
@@ -215,7 +215,7 @@ const BannerSlider = ({ slides }) => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="flex items-center md:gap-3 gap-2"
               >
-                <div className="md:w-10 md:h-10 h-8 w-8 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/30">
+                <div className="md:w-10 md:h-10 h-8 w-8 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                   <Sparkles className="md:w-5 md:h-5 h-4 w-4 lg:w-6 lg:h-6 text-white" />
                 </div>
                 <div>
