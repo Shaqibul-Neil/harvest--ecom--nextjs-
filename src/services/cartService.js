@@ -51,7 +51,7 @@ export const addToCartService = async (ownerInfo, productId, quantity) => {
 
   //5. do cart already exist or not
   const itemIndex = cart.items.findIndex(
-    (i) => i.productId.toString() === productId
+    (i) => i.productId.toString() === productId,
   ); //must use toString()
 
   if (itemIndex > -1) {
@@ -90,7 +90,7 @@ export const syncCartService = async (ownerId, localItems) => {
     const dbItemIndex = cart.items.findIndex(
       (dbItem) =>
         dbItem.productId.toString() === localItem.productId &&
-        dbItem.price === localItem.price
+        dbItem.price === localItem.price,
     );
     if (dbItemIndex > -1) {
       //if there is similar product then just increase the quantity
@@ -108,3 +108,5 @@ export const syncCartService = async (ownerId, localItems) => {
   //return the updated cart to get the items array in frontend
   return await findCartByOwner(ownerId);
 };
+
+//deleting cart logic

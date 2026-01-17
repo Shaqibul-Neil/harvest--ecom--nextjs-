@@ -18,22 +18,22 @@ export default async function Home() {
       {/* <p>Server : {JSON.stringify(session)}</p> */}
       {/* <p>{session.user.role}</p> */}
       {/* <Test /> */}
-      <section>
+      <section className="mb-10">
         <Banner />
       </section>
-      <section className="max-w-[1440px] w-11/12 mx-auto px-5 mb-8">
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 my-16">
         <FeaturedProducts />
       </section>
-      <section className="bg-green-50/50 py-8 md:mb-10 mb-8">
+      <section className="bg-green-50/50 py-8 md:mb-10 mb-8 lg:mb-16">
         <WhyChooseUs />
       </section>
-      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:my-24 md:my-32 my-20">
+      <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:my-32 md:my-32 my-20">
         <FeaturedHighlightSection />
       </section>
-      <section className="lg:mt-32 md:my-16 my-8">
+      <section className="lg:my-32 md:my-16 my-8">
         <SeasonalPromoSection />
       </section>
-      <section className="lg:mb-20 md:mb-12 mb-8">
+      <section className="lg:mb-32 md:mb-12 mb-8">
         <SustainabilitySection />
       </section>
       <section className="max-w-[1440px] w-11/12 mx-auto px-5 lg:mb-32 md:mb-28 mb-20">
