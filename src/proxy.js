@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 //user private routes
 const privateRoutes = ["/dashboard"];
 //admin routes
-const adminRoutes = ["/admin/add-products"];
+const adminRoutes = ["/dashboard/admin/add-products"];
 //seller routes
 // This function can be marked `async` if using `await` inside
 export async function proxy(req) {
@@ -18,7 +18,7 @@ export async function proxy(req) {
   const isAdmin = token?.role === "admin";
   //check if the desired path is private or not
   const isPrivateRoute = privateRoutes.some((route) =>
-    reqPath.startsWith(route)
+    reqPath.startsWith(route),
   );
   const isAdminRoute = adminRoutes.some((route) => reqPath.startsWith(route));
   //   console.log({ isAuthenticated, isUser, reqPath, isPrivate });
@@ -43,5 +43,5 @@ export async function proxy(req) {
 // export default function proxy(request) { ... }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/dashboard/:path*", "/dashboard/admin/:path*"],
 };

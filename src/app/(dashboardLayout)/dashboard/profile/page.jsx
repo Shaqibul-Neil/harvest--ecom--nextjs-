@@ -1,7 +1,8 @@
+import WorkInProgress from "@/components/shared/WorkInProgress";
 import React from "react";
 
 const Profile = () => {
-  return <div>Profile</div>;
+  return <WorkInProgress />;
 };
 
 export default Profile;

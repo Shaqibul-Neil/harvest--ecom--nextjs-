@@ -1,6 +1,6 @@
 import React from "react";
 
-const SubHeadings = ({ children, className, style }) => {
+const SubHeadings = ({ children }) => {
   return (
     <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-full px-4 py-2 shadow-lg shadow-green-100/50">
       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -28,7 +28,7 @@ export default function MainHeader({ session }) {
     { title: "Contact", href: "/contact" },
   ];
   if (!mounted) {
-    return null; // বা skeleton / empty header
+    return null; // skeleton / empty header
   }
 
   return (
@@ -38,7 +38,6 @@ export default function MainHeader({ session }) {
         <div className="flex items-center gap-1 relative">
           <div>
             {/* Mobile Hamburger */}
-
             <button
               className="lg:hidden mt-2 cursor-pointer z-30 relative"
               onClick={() => setMenuOpen(!menuOpen)}

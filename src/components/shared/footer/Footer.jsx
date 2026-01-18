@@ -80,12 +80,15 @@ const Footer = () => {
                   >
                     <Icon size={14} />
                   </Link>
-                )
+                ),
               )}
             </div>
           </div>
         </div>
       </div>
+      <p className="text-center text-slate-600 text-sm">
+        All Right Reserved © 2023 Harvest. Shaqibul Islam.
+      </p>
     </footer>
   );
 };

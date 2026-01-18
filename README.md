@@ -64,7 +64,7 @@
 ### 🎨 UI/UX Design
 
 - [x] **Responsive Layout** — Mobile, Tablet, Desktop optimized
-- [x] **Hero Banner Slider** — Swiper.js carousel with animations
+- [x] **Hero Banner Slider** — Custom Framer Motion slider carousel with animations
 - [x] **Loading Skeletons** — Placeholder UI during data fetch
 - [x] **Toast Notifications** — React Hot Toast for user feedback
 - [x] **Framer Motion Animations** — Smooth page transitions and micro-interactions
@@ -119,7 +119,7 @@
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/harvest.git
+   git clone https://github.com/Shaqibul-Neil/harvest--ecom--nextjs-.git
    cd harvest
    ```
 
